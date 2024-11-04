@@ -59,7 +59,6 @@ function M.get_config_values(config)
 	return config_values
 end
 
--- FIXME: Finish implementation
 function M.update_config(config)
 	print("THIS IS THE CONFIGURATION SCRIPT")
 	print("\nPress 'Enter' to continue...")

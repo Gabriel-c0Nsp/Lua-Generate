@@ -9,10 +9,5 @@ local config_file = config.generate_config()
 local config_values = config.get_config_values(config_file)
 -- debug.show_config_values(config_values)
 
-if arg[1] == "c" then
-  lg_config()
-end
-
-
 -- closes config file 
 config.close_config(config_file)

@@ -11,7 +11,7 @@ local config_values = config.get_config_values(config_file)
 -- debug.show_config_values(config_values)
 
 -- testing purposes
-lg_generate.generate_component("gabriel", "path")
+lg_generate.generate_component(arg[1], arg[2])
 
 -- closes config file
 config.close_config(config_file)

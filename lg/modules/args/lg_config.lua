@@ -2,7 +2,6 @@ local colors = require("modules.utils.colors")
 local config = require("modules.config")
 
 local M = {}
-
 --[[
   Example:
     lg c

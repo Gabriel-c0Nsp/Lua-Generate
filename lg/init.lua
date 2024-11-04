@@ -1,6 +1,7 @@
 local config = require("modules.config")
 local debug = require("modules.utils.debug")
 local lg_config = require("modules.args.lg_config")
+local lg_generate = require("modules.args.lg_generate")
 
 -- creates config file
 local config_file = config.generate_config()
@@ -9,5 +10,8 @@ local config_file = config.generate_config()
 local config_values = config.get_config_values(config_file)
 -- debug.show_config_values(config_values)
 
--- closes config file 
+-- testing purposes
+lg_generate.generate_component("gabriel", "path")
+
+-- closes config file
 config.close_config(config_file)

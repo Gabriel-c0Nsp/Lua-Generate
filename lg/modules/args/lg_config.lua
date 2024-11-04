@@ -1,7 +1,6 @@
 local colors = require("modules.utils.colors")
 local config = require("modules.config")
 
-
 local M = {}
 
 --[[
@@ -10,7 +9,7 @@ local M = {}
     lg config
 ]]
 function M.show_config()
-  print(colors.yellow .. "Your current configuration is:" .. colors.reset)
+	print(colors.yellow .. "Your current configuration is:" .. colors.reset)
 	os.execute("cat config.txt | tail -n +2")
 end
 
@@ -22,7 +21,8 @@ end
     lg c u
 ]]
 function M.update_config()
-  local config_file = config.open_config()
-  config.update_config(config_file)
+	local config_file = config.open_config()
+	config.update_config(config_file)
+	config.close_config(config_file)
 end
 return M

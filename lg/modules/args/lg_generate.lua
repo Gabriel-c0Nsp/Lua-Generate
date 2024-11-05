@@ -20,12 +20,12 @@ function M.generate_component(name, path)
 	local has_custom_extension = name:match("%.[%w]+$")
 	local full_name = has_custom_extension and name or (name .. "." .. config_values.extension)
 
-	-- Checks if `path` ends with a slash and, if not, adds one
+	-- Checks if "path" ends with a slash and, if not, adds one
 	if path:sub(-1) ~= "/" then
 		path = path .. "/"
 	end
 
-	-- Cria o diretório, se necessário
+	-- Creates the directory, if necessary
 	os.execute("mkdir -p " .. path)
 
 	local component = [[
@@ -45,7 +45,7 @@ function M.generate_component(name, path)
 		component_file:write(component)
 		component_file:close()
 	else
-    -- TODO: better way to handle this
+		-- TODO: better way to handle this
 		print("The file already exists")
 	end
 end

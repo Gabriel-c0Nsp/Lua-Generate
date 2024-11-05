@@ -1,5 +1,7 @@
 local config = require("modules.config")
 local file_exist = require("modules.utils.check_file_exist")
+local colors = require("modules.utils.colors")
+local validate_input = require("modules.utils.validate_input")
 
 local M = {}
 --[[
@@ -28,11 +30,8 @@ function M.generate_component(name, path)
 	-- Creates the directory, if necessary
 	os.execute("mkdir -p " .. path)
 
+	-- TODO: Add the component template depending on the extension
 	local component = [[
-    qualquer coisa para testar
-    e ver o que acontece
-      algo aqui
-      isso foi com tab, eu acho
   ]]
 
 	if not file_exist(full_name) then
@@ -45,8 +44,37 @@ function M.generate_component(name, path)
 		component_file:write(component)
 		component_file:close()
 	else
-		-- TODO: better way to handle this
-		print("The file already exists")
+		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
+		local valid_options = { "y", "n" }
+		local answer
+
+		repeat
+			print("Do you want to overwrite it? (y/N)")
+			answer = io.read()
+			answer = answer:lower()
+
+			if answer == "" then
+				answer = "n"
+			end
+
+			if not validate_input(answer, valid_options) then
+				print(colors.red .. "Invalid input. Please try again." .. colors.reset)
+			end
+		until validate_input(answer, valid_options)
+
+		if answer == "y" then
+			local component_file = io.open(path .. "/" .. full_name, "w")
+
+			if not component_file then
+				print("ERROR: Unable to create component file")
+				return nil
+			end
+
+			component_file:write(component)
+			component_file:close()
+		else
+			print(colors.yellow .. "Operation canceled" .. colors.reset)
+		end
 	end
 end
 return M

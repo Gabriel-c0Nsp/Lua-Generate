@@ -4,23 +4,22 @@ local colors = require("modules.utils.colors")
 local validate_input = require("modules.utils.validate_input")
 
 local M = {}
+local config_file = config.open_config()
+local config_values = config.get_config_values(config_file)
+
 --[[
   Example:
-    lg g <name>
-    lg generate <name>
-    lg g <name> <path>
-    lg generate <name> <path>
+    lg g <component_name>
+    lg generate <component_name>
+    lg g <component_name> <path>
+    lg generate <component_name> <path>
 ]]
-function M.generate_component(name, path)
-	local config_file = config.open_config()
-	local config_values = config.get_config_values(config_file)
-	config.close_config(config_file)
-
+function M.generate_component(component_name, path)
 	path = path or "./"
 
-	-- Checks if "name" has a custom extension
-	local has_custom_extension = name:match("%.[%w]+$")
-	local full_name = has_custom_extension and name or (name .. "." .. config_values.extension)
+	-- Checks if "component_name" has a custom extension
+	local has_custom_extension = component_name:match("%.[%w]+$")
+	local full_name = has_custom_extension and component_name or (component_name .. "." .. config_values.extension)
 
 	-- Checks if "path" ends with a slash and, if not, adds one
 	if path:sub(-1) ~= "/" then
@@ -77,4 +76,38 @@ function M.generate_component(name, path)
 		end
 	end
 end
+
+--[[
+  Example:
+    lg g p<directory_name>
+    lg generate p<directory_name>
+    lg g page<directory_name>
+    lg generate page<directory_name>
+]]
+function M.generate_page(path)
+	path = path or "./"
+
+	if path:sub(-1) == "/" then
+		path = path:sub(1, -2)
+	end
+
+	os.execute("mkdir -p " .. path)
+	os.execute("touch " .. path .. "/page." .. config_values.extension)
+
+	-- TODO: Add the page template depending on the extension
+	local page = [[
+  ]]
+
+	local page_file = io.open(path .. "/page." .. config_values.extension, "w")
+
+	if not page_file then
+		print("ERROR: Unable to create page file")
+		return nil
+	end
+
+	page_file:write(page)
+	page_file:close()
+end
+
+config.close_config(config_file)
 return M

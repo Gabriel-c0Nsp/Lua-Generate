@@ -141,9 +141,8 @@ function M.generate_svg(svg_name, file_path)
 			-- TODO: ask the user if they want to create a default svg file or abort the operation
 			print(colors.yellow .. "Creating a default svg file" .. colors.reset)
 		elseif file_path ~= nil then
-			local svg_tag = io.open(file_path):read("*a"):match("<svg.->.*</svg>")
 			-- TODO: Add the svg file template depending on the extension
-			-- FIXME: Gives an error if the file is not found
+			local svg_tag = io.open(file_path):read("*a"):match("<svg.->.*</svg>")
 			svg = [[
       ]]
 		else
@@ -152,7 +151,9 @@ function M.generate_svg(svg_name, file_path)
       ]]
 		end
 
-		svg_file:write(svg)
+    if file_path == nil then
+      svg_file:write(svg)
+    end
 		svg_file:close()
 	else
 		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
@@ -186,9 +187,8 @@ function M.generate_svg(svg_name, file_path)
 				-- TODO: ask the user if they want to create a default svg file or abort the operation
 				print(colors.yellow .. "Creating a default svg file" .. colors.reset)
 			elseif file_path ~= nil then
-				local svg_tag = io.open(file_path):read("*a"):match("<svg.->.*</svg>")
 				-- TODO: Add the svg file template depending on the extension
-				-- FIXME: Gives an error if the file is not found
+				local svg_tag = io.open(file_path):read("*a"):match("<svg.->.*</svg>")
 				svg = [[
         ]]
 			else

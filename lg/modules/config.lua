@@ -26,7 +26,6 @@ end
 
 function M.open_config()
 	if not io.open("config.txt", "r") then
-		print("ERROR: config file not found")
 		return nil
 	else
 		return io.open("config.txt", "r+")
@@ -34,7 +33,9 @@ function M.open_config()
 end
 
 function M.close_config(config)
-	config:close()
+  if config then
+    config:close()
+  end
 end
 
 function M.get_config_values(config)
@@ -44,21 +45,23 @@ function M.get_config_values(config)
 	}
 
 	-- returns the file pointer to the beginning
-	config:seek("set")
+	if config then
+		config:seek("set")
 
-	for line in config:lines() do
-		-- ignore empty lines and comments
-		if not line:match("^%s*$") and not line:match("^%s*%*") then
-			-- capture the value of style in quotes
-			local style = line:match('style%s*=%s*"(.-)"')
-			if style then
-				config_values.style = style
-			end
+		for line in config:lines() do
+			-- ignore empty lines and comments
+			if not line:match("^%s*$") and not line:match("^%s*%*") then
+				-- capture the value of style in quotes
+				local style = line:match('style%s*=%s*"(.-)"')
+				if style then
+					config_values.style = style
+				end
 
-			-- capture the value of extension in quotes
-			local extension = line:match('extension%s*=%s*"(.-)"')
-			if extension then
-				config_values.extension = extension
+				-- capture the value of extension in quotes
+				local extension = line:match('extension%s*=%s*"(.-)"')
+				if extension then
+					config_values.extension = extension
+				end
 			end
 		end
 	end

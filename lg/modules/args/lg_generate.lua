@@ -87,6 +87,7 @@ end
 function M.generate_page(path)
 	path = path or "./"
 
+	-- Checks if "path" ends with a slash and, if it has, removes it
 	if path:sub(-1) == "/" then
 		path = path:sub(1, -2)
 	end
@@ -107,6 +108,96 @@ function M.generate_page(path)
 
 	page_file:write(page)
 	page_file:close()
+end
+
+--[[
+  Example:
+    lg g p<directory_name>
+    lg generate p<directory_name>
+    lg g page<directory_name>
+    lg generate page<directory_name>
+]]
+function M.generate_svg(svg_name, file_path)
+	local has_custom_extension = svg_name:match("%.[%w]+$")
+	local full_name = has_custom_extension and svg_name or (svg_name .. "." .. config_values.extension)
+
+	file_path = file_path or nil
+
+	local svg
+
+	if not file_exist(full_name) then
+		local svg_file = io.open(full_name, "w")
+		if not svg_file then
+			print("ERROR: Unable to create file containing the svg")
+			return nil
+		end
+
+		if file_path ~= nil and not file_exist(file_path) then
+			print(colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset)
+			-- TODO: ask the user if they want to create a default svg file or abort the operation
+			print(colors.yellow .. "Creating a default svg file" .. colors.reset)
+		elseif file_path ~= nil then
+			local svg_tag = io.open(file_path):read("*a"):match("<svg.->.*</svg>")
+			-- TODO: Add the svg file template depending on the extension
+			-- FIXME: Gives an error if the file is not found
+			svg = [[
+      ]]
+		else
+			-- TODO: Add the svg file template depending on the extension (for default svg)
+			svg = [[
+      ]]
+		end
+
+		svg_file:write(svg)
+		svg_file:close()
+	else
+		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
+		local valid_options = { "y", "n" }
+		local answer
+
+		repeat
+			print("Do you want to overwrite it? (y/N)")
+			answer = io.read()
+			answer = answer:lower()
+
+			if answer == "" then
+				answer = "n"
+			end
+
+			if not validate_input(answer, valid_options) then
+				print(colors.red .. "Invalid input. Please try again." .. colors.reset)
+			end
+		until validate_input(answer, valid_options)
+
+		if answer == "y" then
+			local svg_file = io.open(full_name, "w")
+
+			if not svg_file then
+				print("ERROR: Unable to create file containing the svg")
+				return nil
+			end
+
+			if file_path ~= nil and not file_exist(file_path) then
+				print(colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset)
+				-- TODO: ask the user if they want to create a default svg file or abort the operation
+				print(colors.yellow .. "Creating a default svg file" .. colors.reset)
+			elseif file_path ~= nil then
+				local svg_tag = io.open(file_path):read("*a"):match("<svg.->.*</svg>")
+				-- TODO: Add the svg file template depending on the extension
+				-- FIXME: Gives an error if the file is not found
+				svg = [[
+        ]]
+			else
+				-- TODO: Add the svg file template depending on the extension (for default svg)
+				svg = [[
+        ]]
+			end
+			svg_file:write(svg)
+			svg_file:close()
+		else
+			print(colors.yellow .. "Operation canceled" .. colors.reset)
+		end
+	end
 end
 
 config.close_config(config_file)

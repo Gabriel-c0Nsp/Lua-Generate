@@ -13,6 +13,7 @@ local config_values = config.get_config_values(config_file)
 -- testing purposes
 -- lg_generate.generate_component(arg[1], arg[2])
 -- lg_generate.generate_page(arg[1])
+-- lg_generate.generate_svg(arg[1], arg[2])
 
 -- lg_config.show_config()
 

@@ -112,10 +112,14 @@ end
 
 --[[
   Example:
-    lg g p<directory_name>
-    lg generate p<directory_name>
-    lg g page<directory_name>
-    lg generate page<directory_name>
+    lg g s<file_name>
+    lg generate s<file_name>
+    lg g svg<file_name>
+    lg generate svg<file_name>
+    lg g s<file_name> <file_path>
+    lg generate s<file_name> <file_path>
+    lg g svg<file_name> <file_path>
+    lg generate svg<file_name> <file_path>
 ]]
 function M.generate_svg(svg_name, file_path)
 	local has_custom_extension = svg_name:match("%.[%w]+$")

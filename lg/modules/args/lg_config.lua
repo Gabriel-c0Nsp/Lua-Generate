@@ -20,8 +20,6 @@ end
     lg c u
 ]]
 function M.update_config()
-	local config_file = config.open_config()
-	config.update_config(config_file)
-	config.close_config(config_file)
+	config.update_config()
 end
 return M

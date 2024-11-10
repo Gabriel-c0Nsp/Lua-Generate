@@ -4,6 +4,7 @@ local colors = require("modules.utils.colors")
 local validate_input = require("modules.utils.validate_input")
 
 local M = {}
+
 local config_file = config.open_config()
 local config_values = config.get_config_values(config_file)
 
@@ -14,7 +15,7 @@ local config_values = config.get_config_values(config_file)
     lg g <component_name> <path>
     lg generate <component_name> <path>
 ]]
-function M.generate_component(component_name, path)
+M.generate_component = function(component_name, path)
 	path = path or "./"
 
 	-- Checks if "component_name" has a custom extension
@@ -84,7 +85,7 @@ end
     lg g page<directory_name>
     lg generate page<directory_name>
 ]]
-function M.generate_page(path)
+M.generate_page = function(path)
 	path = path or "./"
 
 	-- Checks if "path" ends with a slash and, if it has, removes it
@@ -121,7 +122,7 @@ end
     lg g svg<file_name> <file_path>
     lg generate svg<file_name> <file_path>
 ]]
-function M.generate_svg(svg_name, file_path)
+M.generate_svg = function(svg_name, file_path)
 	local has_custom_extension = svg_name:match("%.[%w]+$")
 	local full_name = has_custom_extension and svg_name or (svg_name .. "." .. config_values.extension)
 
@@ -151,9 +152,9 @@ function M.generate_svg(svg_name, file_path)
       ]]
 		end
 
-    if file_path == nil then
-      svg_file:write(svg)
-    end
+		if file_path == nil then
+			svg_file:write(svg)
+		end
 		svg_file:close()
 	else
 		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
@@ -205,4 +206,5 @@ function M.generate_svg(svg_name, file_path)
 end
 
 config.close_config(config_file)
+
 return M

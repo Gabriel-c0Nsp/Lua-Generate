@@ -2,7 +2,8 @@ local colors = require("modules.utils.colors")
 local validate_input = require("modules.utils.validate_input")
 
 local M = {}
-function M.generate_config()
+
+M.generate_config = function()
 	local config = io.open("config.txt", "r")
 
 	if not config then
@@ -24,7 +25,7 @@ function M.generate_config()
 	return config
 end
 
-function M.open_config()
+M.open_config = function()
 	if not io.open("config.txt", "r") then
 		return nil
 	else
@@ -32,13 +33,13 @@ function M.open_config()
 	end
 end
 
-function M.close_config(config)
-  if config then
-    config:close()
-  end
+M.close_config = function(config)
+	if config then
+		config:close()
+	end
 end
 
-function M.get_config_values(config)
+M.get_config_values = function(config)
 	local config_values = {
 		style = "",
 		extension = "",
@@ -69,7 +70,7 @@ function M.get_config_values(config)
 	return config_values
 end
 
-function M.update_config(config)
+M.update_config = function()
 	print(colors.yellow .. "THIS IS THE CONFIGURATION SCRIPT" .. colors.reset)
 	print("\nPress 'Enter' to continue...")
 	_ = io.read()
@@ -137,7 +138,7 @@ function M.update_config(config)
 		if style == "1" then
 			updated_config:write('style = "CSS"\n')
 		elseif style == "2" then
-			updated_config:write('style = "Tailwind"')
+			updated_config:write('style = "Tailwind\n"')
 		end
 
 		os.execute("clear")
@@ -146,4 +147,5 @@ function M.update_config(config)
 
 	M.close_config(updated_config)
 end
+
 return M

@@ -1,6 +1,7 @@
 local M = {}
-function M.help_message()
-  local message = [[
+
+M.help_message = function()
+	local message = [[
    Lua Generate.
 
   CLI tool for generating boilerplate code for Next.js projects.
@@ -59,7 +60,7 @@ function M.help_message()
     [target_file_path]  - Optional. The path of the file to copy the SVG content from
     [path]              - Optional. The path where the file or directory should be created ]]
 
-  print(message)
+	print(message)
 end
 
 return M

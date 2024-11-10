@@ -6,7 +6,7 @@ local lg_help = require("modules.args.lg_help")
 
 -- creates config file
 local config_file = config.generate_config()
--- config.update_config(config_file)
+-- config.update_config()
 
 local config_values = config.get_config_values(config_file)
 -- debug.show_config_values(config_values)

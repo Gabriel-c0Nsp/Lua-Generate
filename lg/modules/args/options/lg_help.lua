@@ -1,8 +1,11 @@
+local colors = require("modules.utils.colors")
+
 local M = {}
 
 M.help_message = function()
-	local message = [[
-  Lua Generate.
+	local message = string.format(
+		[[
+  %sLua Generate%s
 
   CLI tool for generating boilerplate code for Next.js projects.
 
@@ -15,36 +18,36 @@ M.help_message = function()
   enhancing the user experience while leaving error-handling decisions
   up to the user.
 
-  Commands
-    lg c - Show the current configuration 
+  Commands:
+    %slg c%s - Show the current configuration 
       Alternative syntax:
         - lg config
 
-    lg c u - Runs a script to update the configuration
+    %slg c u%s - Runs a script to update the configuration
       Alternative syntax:
         - lg config u
         - lg c update
         - lg config update
 
-    lg g c <component_name> [path]  - Generate a component file with the specified name 
+    %slg g c %s<component_name> [path]%s - Generate a component file with the specified name 
       Alternative syntax:
         - lg generate c <component_name> [path]
         - lg g component <component_name> [path]
         - lg generate component <component_name> [path]
 
-    lg g p <directory_name> [path]  - Generates a directory with the specified name and page file inside
+    %slg g p %s<directory_name> [path]%s - Generates a directory with the specified name and page file inside
       Alternative syntax:
         - lg generate p <directory_name> [path]
         - lg g page <directory_name> [path]
         - lg generate page <directory_name> [path]
 
-    lg g s <svg_name> [target_file_path]  - Creates a file with an SVG tag
+    %slg g s %s<svg_name> [target_file_path]%s - Creates a file with an SVG tag
       Alternative syntax:
         - lg generate s <svg_name> [target_file_path]
         - lg g svg <svg_name> [target_file_path]
         - lg generate svg <svg_name> [target_file_path]
 
-    lg h - Show this help message
+    %slg h%s - Show this help message
       Alternative syntax:
         - lg help
         - lg --help
@@ -58,7 +61,25 @@ M.help_message = function()
     <directory_name>    - The name of the directory to generate
     <svg_name>          - The name of the SVG file to generate
     [target_file_path]  - Optional. The path of the file to copy the SVG content from
-    [path]              - Optional. The path where the file or directory should be created ]]
+    [path]              - Optional. The path where the file or directory should be created ]],
+    colors.bold,
+    colors.reset,
+		colors.green,
+		colors.reset,
+		colors.green,
+		colors.reset,
+		colors.green,
+		colors.yellow,
+		colors.reset,
+		colors.green,
+		colors.yellow,
+		colors.reset,
+		colors.green,
+		colors.yellow,
+		colors.reset,
+		colors.green,
+		colors.reset
+	)
 
 	print(message)
 end

@@ -57,8 +57,25 @@ local function in_case_generate(args)
 
 				lg_generate.generate_page(page_path)
 			end
-    else
-      invalid_arguments()
+		elseif args[2] == "s" or args[2] == "svg" then
+			if #args == 2 then
+				print(
+					colors.yellow
+						.. "You need to provide a name for the compoment that will containg the SVG tag!"
+						.. colors.reset
+				)
+				print("You can try: lg --help for more information")
+				os.exit(1)
+			elseif #args > 4 then
+				too_many_args()
+			else
+				local svg_component_name = args[3]
+				local svg_file_path = args[4]
+
+				lg_generate.generate_svg(svg_component_name, svg_file_path)
+			end
+		else
+			invalid_arguments()
 		end
 	end
 end
@@ -85,8 +102,6 @@ local function in_case_help(args)
 	end
 end
 
--- TODO: Finish implementation
--- NOTE: lg g <whatever> still passing
 M.check_args = function(args)
 	check_any_args(args)
 	if args[1] == "c" or args[1] == "config" then

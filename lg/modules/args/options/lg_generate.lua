@@ -1,12 +1,11 @@
-local config = require("modules.config")
+local config = require("modules.config.config")
 local file_exist = require("modules.utils.check_file_exist")
 local colors = require("modules.utils.colors")
 local validate_input = require("modules.utils.validate_input")
 
 local M = {}
 
-local config_file = config.open_config()
-local config_values = config.get_config_values(config_file)
+local config_values = config.get_config_values()
 
 --[[
   Example:
@@ -204,7 +203,5 @@ M.generate_svg = function(svg_name, file_path)
 		end
 	end
 end
-
-config.close_config(config_file)
 
 return M

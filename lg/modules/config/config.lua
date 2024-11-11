@@ -18,37 +18,18 @@ M.generate_config = function()
 		config:write('extension = "default"\n')
 		config:write('style = "default"\n')
 		config:close()
-
-		config = io.open("config.txt", "r")
-	end
-
-	return config
-end
-
-M.open_config = function()
-	if not io.open("config.txt", "r") then
-		return nil
-	else
-		return io.open("config.txt", "r+")
 	end
 end
 
-M.close_config = function(config)
-	if config then
-		config:close()
-	end
-end
-
-M.get_config_values = function(config)
+M.get_config_values = function()
 	local config_values = {
 		style = "",
 		extension = "",
 	}
 
-	-- returns the file pointer to the beginning
-	if config then
-		config:seek("set")
+	local config = io.open("config.txt", "r+")
 
+	if config then
 		for line in config:lines() do
 			-- ignore empty lines and comments
 			if not line:match("^%s*$") and not line:match("^%s*%*") then
@@ -70,7 +51,6 @@ M.get_config_values = function(config)
 	return config_values
 end
 
--- FIXME: Sometimes it generates garbage on the last line of the file.
 M.update_config = function()
 	print(colors.yellow .. "THIS IS THE CONFIGURATION SCRIPT" .. colors.reset)
 	print("\nPress 'Enter' to continue...")
@@ -119,7 +99,7 @@ M.update_config = function()
 		end
 	until validate_input(style, valid_style_input)
 
-	local updated_config = M.open_config()
+	local updated_config = io.open("config.txt", "w+")
 
 	if not updated_config then
 		print("ERROR: Unable to update config file")
@@ -139,14 +119,15 @@ M.update_config = function()
 		if style == "1" then
 			updated_config:write('style = "CSS"\n')
 		elseif style == "2" then
-			updated_config:write('style = "Tailwind\n"')
+			updated_config:write('style = "Tailwind"\n')
 		end
 
 		os.execute("clear")
 		print(colors.green .. "Configuration updated successfully!" .. colors.reset)
+
+    updated_config:close()
 	end
 
-	M.close_config(updated_config)
 end
 
 return M

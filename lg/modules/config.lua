@@ -70,6 +70,7 @@ M.get_config_values = function(config)
 	return config_values
 end
 
+-- FIXME: Sometimes it generates garbage on the last line of the file.
 M.update_config = function()
 	print(colors.yellow .. "THIS IS THE CONFIGURATION SCRIPT" .. colors.reset)
 	print("\nPress 'Enter' to continue...")

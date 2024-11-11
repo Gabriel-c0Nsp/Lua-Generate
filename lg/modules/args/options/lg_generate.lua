@@ -10,10 +10,10 @@ local config_values = config.get_config_values(config_file)
 
 --[[
   Example:
-    lg g <component_name>
-    lg generate <component_name>
-    lg g <component_name> <path>
-    lg generate <component_name> <path>
+    lg g c <component_name>
+    lg generate c <component_name>
+    lg g c <component_name> <path>
+    lg generate c <component_name> <path>
 ]]
 M.generate_component = function(component_name, path)
 	path = path or "./"
@@ -80,10 +80,10 @@ end
 
 --[[
   Example:
-    lg g p<directory_name>
-    lg generate p<directory_name>
-    lg g page<directory_name>
-    lg generate page<directory_name>
+    lg g p <directory_name>
+    lg generate p <directory_name>
+    lg g page <directory_name>
+    lg generate page <directory_name>
 ]]
 M.generate_page = function(path)
 	path = path or "./"
@@ -113,14 +113,14 @@ end
 
 --[[
   Example:
-    lg g s<file_name>
-    lg generate s<file_name>
-    lg g svg<file_name>
-    lg generate svg<file_name>
-    lg g s<file_name> <file_path>
-    lg generate s<file_name> <file_path>
-    lg g svg<file_name> <file_path>
-    lg generate svg<file_name> <file_path>
+    lg g s <file_name>
+    lg generate s <file_name>
+    lg g svg <file_name>
+    lg generate svg <file_name>
+    lg g s <file_name> <file_path>
+    lg generate s <file_name> <file_path>
+    lg g svg <file_name> <file_path>
+    lg generate svg <file_name> <file_path>
 ]]
 M.generate_svg = function(svg_name, file_path)
 	local has_custom_extension = svg_name:match("%.[%w]+$")

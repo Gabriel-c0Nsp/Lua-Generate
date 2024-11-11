@@ -2,7 +2,7 @@ local M = {}
 
 M.help_message = function()
 	local message = [[
-   Lua Generate.
+  Lua Generate.
 
   CLI tool for generating boilerplate code for Next.js projects.
 

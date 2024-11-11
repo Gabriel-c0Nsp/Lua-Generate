@@ -57,6 +57,8 @@ local function in_case_generate(args)
 
 				lg_generate.generate_page(page_path)
 			end
+    else
+      invalid_arguments()
 		end
 	end
 end

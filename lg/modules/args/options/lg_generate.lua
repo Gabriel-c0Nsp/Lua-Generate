@@ -15,7 +15,6 @@ local config_values = config.get_config_values()
     lg g c <component_name> <path>
     lg generate c <component_name> <path>
 ]]
-
 M.generate_component = function(component_name, path)
 	path = path or "./"
 
@@ -45,7 +44,7 @@ M.generate_component = function(component_name, path)
 	elseif config_values.extension == "tsx" then
 		component = templates.component_template(component_name).component_tsx
 	else
-		print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+		print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
 		os.exit(1)
 	end
 
@@ -101,7 +100,7 @@ end
     lg g page <directory_name>
     lg generate page <directory_name>
 ]]
-M.generate_page = function(path)
+M.generate_page = function(path, function_name)
 	path = path or "./"
 
 	-- Checks if "path" ends with a slash and, if it has, removes it
@@ -112,9 +111,20 @@ M.generate_page = function(path)
 	os.execute("mkdir -p " .. path)
 	os.execute("touch " .. path .. "/page." .. config_values.extension)
 
-	-- TODO: Add the page template depending on the extension
-	local page = [[
-  ]]
+	local page
+
+	if config_values.extension == "js" then
+		page = templates.component_template(function_name).component_js
+	elseif config_values.extension == "jsx" then
+		page = templates.component_template(function_name).component_jsx
+	elseif config_values.extension == "ts" then
+		page = templates.component_template(function_name).component_ts
+	elseif config_values.extension == "tsx" then
+		page = templates.component_template(function_name).component_tsx
+	else
+		print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
+		os.exit(1)
+	end
 
 	local page_file = io.open(path .. "/page." .. config_values.extension, "w")
 
@@ -188,7 +198,7 @@ M.generate_svg = function(svg_name, file_path)
 				elseif config_values.extension == "tsx" then
 					svg = templates.svg_template(svg_name, nil).svg_tsx
 				else
-					print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+					print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
 					os.exit(1)
 				end
 
@@ -210,7 +220,7 @@ M.generate_svg = function(svg_name, file_path)
 			elseif config_values.extension == "tsx" then
 				svg = templates.svg_template(svg_name, svg_content).svg_tsx
 			else
-				print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+				print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
 				os.exit(1)
 			end
 
@@ -235,7 +245,7 @@ M.generate_svg = function(svg_name, file_path)
 			elseif config_values.extension == "tsx" then
 				svg = templates.svg_template(svg_name, nil).svg_tsx
 			else
-				print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+				print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
 				os.exit(1)
 			end
 
@@ -308,7 +318,7 @@ M.generate_svg = function(svg_name, file_path)
 					elseif config_values.extension == "tsx" then
 						svg = templates.svg_template(svg_name, nil).svg_tsx
 					else
-						print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+						print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
 						os.exit(1)
 					end
 
@@ -330,7 +340,7 @@ M.generate_svg = function(svg_name, file_path)
 				elseif config_values.extension == "tsx" then
 					svg = templates.svg_template(svg_name, svg_content).svg_tsx
 				else
-					print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+					print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
 					os.exit(1)
 				end
 
@@ -355,7 +365,7 @@ M.generate_svg = function(svg_name, file_path)
 				elseif config_values.extension == "tsx" then
 					svg = templates.svg_template(svg_name, nil).svg_tsx
 				else
-					print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+					print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
 					os.exit(1)
 				end
 

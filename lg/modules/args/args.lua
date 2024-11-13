@@ -46,16 +46,17 @@ local function in_case_generate(args)
 				lg_generate.generate_component(component_name, compoment_path)
 			end
 		elseif args[2] == "p" or args[2] == "page" then
-			if #args == 2 then
-				print(colors.yellow .. "You need to provide a path for the page!" .. colors.reset)
+			if #args <= 3 then
+				print(colors.yellow .. "You need to provide a path and a function name for the page!" .. colors.reset)
 				print("You can try: lg --help for more information")
 				os.exit(1)
-			elseif #args > 3 then
+			elseif #args > 4 then
 				too_many_args()
 			else
 				local page_path = args[3]
+				local function_name = args[4]
 
-				lg_generate.generate_page(page_path)
+				lg_generate.generate_page(page_path, function_name)
 			end
 		elseif args[2] == "s" or args[2] == "svg" then
 			if #args == 2 then

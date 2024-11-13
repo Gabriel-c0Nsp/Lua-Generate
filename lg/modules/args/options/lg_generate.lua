@@ -15,6 +15,8 @@ local config_values = config.get_config_values()
     lg g c <component_name> <path>
     lg generate c <component_name> <path>
 ]]
+
+-- FIXME: It appends the extension to the component name when you provide the extension trough the arguments
 M.generate_component = function(component_name, path)
 	path = path or "./"
 
@@ -123,6 +125,7 @@ M.generate_page = function(path)
 	page_file:close()
 end
 
+-- FIXME: It appends the extension to the component name when you provide the extension trough the arguments
 -- TODO: Create functions to to simplify how svg files are created
 --[[
   Example:
@@ -139,7 +142,6 @@ M.generate_svg = function(svg_name, file_path)
 	local has_custom_extension = svg_name:match("%.[%w]+$")
 	local full_name = has_custom_extension and svg_name or (svg_name .. "." .. config_values.extension)
 	file_path = file_path or nil
-	local svg
 
 	if not file_exist(full_name) then
 		if file_path ~= nil and not file_exist(file_path) then
@@ -171,8 +173,20 @@ M.generate_svg = function(svg_name, file_path)
 					return nil
 				end
 
-				svg = [[
-        ]]
+				local svg
+
+				if config_values.extension == "js" then
+					svg = templates.svg_template(svg_name, nil).svg_js
+				elseif config_values.extension == "jsx" then
+					svg = templates.svg_template(svg_name, nil).svg_jsx
+				elseif config_values.extension == "ts" then
+					svg = templates.svg_template(svg_name, nil).svg_ts
+				elseif config_values.extension == "tsx" then
+					svg = templates.svg_template(svg_name, nil).svg_tsx
+				else
+					print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+					os.exit(1)
+				end
 
 				svg_file:write(svg)
 				svg_file:close()
@@ -180,10 +194,21 @@ M.generate_svg = function(svg_name, file_path)
 				print(colors.yellow .. "Operation canceled" .. colors.reset)
 			end
 		elseif file_path ~= nil and file_exist(file_path) then
-			-- TODO: Add the svg file template depending on the extension
-			local svg_tag = io.open(file_path):read("*a"):match("<svg.->.*</svg>")
-			svg = [[
-      ]]
+			local svg_content = io.open(file_path):read("*a"):match("<svg.->(.-)</svg>")
+			local svg
+
+			if config_values.extension == "js" then
+				svg = templates.svg_template(svg_name, svg_content).svg_js
+			elseif config_values.extension == "jsx" then
+				svg = templates.svg_template(svg_name, svg_content).svg_jsx
+			elseif config_values.extension == "ts" then
+				svg = templates.svg_template(svg_name, svg_content).svg_ts
+			elseif config_values.extension == "tsx" then
+				svg = templates.svg_template(svg_name, svg_content).svg_tsx
+			else
+				print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+				os.exit(1)
+			end
 
 			local svg_file = io.open(full_name, "w")
 
@@ -195,9 +220,20 @@ M.generate_svg = function(svg_name, file_path)
 			svg_file:write(svg)
 			svg_file:close()
 		else
-			-- TODO: Add the svg file template depending on the extension (for default svg)
-			svg = [[
-      ]]
+			local svg
+
+			if config_values.extension == "js" then
+				svg = templates.svg_template(svg_name, nil).svg_js
+			elseif config_values.extension == "jsx" then
+				svg = templates.svg_template(svg_name, nil).svg_jsx
+			elseif config_values.extension == "ts" then
+				svg = templates.svg_template(svg_name, nil).svg_ts
+			elseif config_values.extension == "tsx" then
+				svg = templates.svg_template(svg_name, nil).svg_tsx
+			else
+				print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+				os.exit(1)
+			end
 
 			local svg_file = io.open(full_name, "w")
 
@@ -257,8 +293,20 @@ M.generate_svg = function(svg_name, file_path)
 						return nil
 					end
 
-					svg = [[
-        ]]
+					local svg
+
+					if config_values.extension == "js" then
+						svg = templates.svg_template(svg_name, nil).svg_js
+					elseif config_values.extension == "jsx" then
+						svg = templates.svg_template(svg_name, nil).svg_jsx
+					elseif config_values.extension == "ts" then
+						svg = templates.svg_template(svg_name, nil).svg_ts
+					elseif config_values.extension == "tsx" then
+						svg = templates.svg_template(svg_name, nil).svg_tsx
+					else
+						print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+						os.exit(1)
+					end
 
 					svg_file:write(svg)
 					svg_file:close()
@@ -266,10 +314,21 @@ M.generate_svg = function(svg_name, file_path)
 					print(colors.yellow .. "Operation canceled" .. colors.reset)
 				end
 			elseif file_path ~= nil and file_exist(file_path) then
-				-- TODO: Add the svg file template depending on the extension
-				local svg_tag = io.open(file_path):read("*a"):match("<svg.->.*</svg>")
-				svg = [[
-      ]]
+				local svg_content = io.open(file_path):read("*a"):match("<svg.->(.-)</svg>")
+				local svg
+
+				if config_values.extension == "js" then
+					svg = templates.svg_template(svg_name, svg_content).svg_js
+				elseif config_values.extension == "jsx" then
+					svg = templates.svg_template(svg_name, svg_content).svg_jsx
+				elseif config_values.extension == "ts" then
+					svg = templates.svg_template(svg_name, svg_content).svg_ts
+				elseif config_values.extension == "tsx" then
+					svg = templates.svg_template(svg_name, svg_content).svg_tsx
+				else
+					print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+					os.exit(1)
+				end
 
 				local svg_file = io.open(full_name, "w")
 
@@ -281,9 +340,20 @@ M.generate_svg = function(svg_name, file_path)
 				svg_file:write(svg)
 				svg_file:close()
 			else
-				-- TODO: Add the svg file template depending on the extension (for default svg)
-				svg = [[
-      ]]
+				local svg
+
+				if config_values.extension == "js" then
+					svg = templates.svg_template(svg_name, nil).svg_js
+				elseif config_values.extension == "jsx" then
+					svg = templates.svg_template(svg_name, nil).svg_jsx
+				elseif config_values.extension == "ts" then
+					svg = templates.svg_template(svg_name, nil).svg_ts
+				elseif config_values.extension == "tsx" then
+					svg = templates.svg_template(svg_name, nil).svg_tsx
+				else
+					print(colors.red .. "ERROR: Invalid extension encountered!" .. colors.reset)
+					os.exit(1)
+				end
 
 				local svg_file = io.open(full_name, "w")
 

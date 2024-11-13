@@ -54,8 +54,76 @@ export default function %s() {
 	return templates
 end
 
-M.svg_template = function(svg_name)
-  -- TODO: Implement this function
+M.svg_template = function(svg_name, svg_content)
+	svg_content = svg_content or ""
+
+	local templates = {
+		svg_js = string.format(
+			[[
+export default function %s() {
+  return (
+    <>
+      <svg>
+        %s
+      </svg>
+    </>
+  );
+}
+  ]],
+			svg_name,
+			svg_content
+		),
+
+		svg_jsx = string.format(
+			[[
+export default function %s() {
+  return (
+    <>
+      <svg>
+        %s
+      </svg>
+    </>
+  );
+}
+  ]],
+			svg_name,
+			svg_content
+		),
+
+		svg_ts = string.format(
+			[[
+export default function %s() {
+  return (
+    <>
+      <svg>
+        %s
+      </svg>
+    </>
+  );
+}
+  ]],
+			svg_name,
+			svg_content
+		),
+
+		svg_tsx = string.format(
+			[[
+export default function %s() {
+  return (
+    <>
+      <svg>
+        %s
+      </svg>
+    </>
+  );
+}
+  ]],
+			svg_name,
+			svg_content
+		),
+	}
+
+	return templates
 end
 
 return M

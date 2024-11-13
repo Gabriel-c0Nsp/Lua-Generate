@@ -16,13 +16,15 @@ local config_values = config.get_config_values()
     lg generate c <component_name> <path>
 ]]
 
--- FIXME: It appends the extension to the component name when you provide the extension trough the arguments
 M.generate_component = function(component_name, path)
 	path = path or "./"
 
 	-- Checks if "component_name" has a custom extension
 	local has_custom_extension = component_name:match("%.[%w]+$")
 	local full_name = has_custom_extension and component_name or (component_name .. "." .. config_values.extension)
+
+	-- subtract the extension from the component name
+	component_name = component_name:match("(.+)%..+") or component_name
 
 	-- Checks if "path" ends with a slash and, if not, adds one
 	if path:sub(-1) ~= "/" then
@@ -125,7 +127,6 @@ M.generate_page = function(path)
 	page_file:close()
 end
 
--- FIXME: It appends the extension to the component name when you provide the extension trough the arguments
 -- TODO: Create functions to to simplify how svg files are created
 --[[
   Example:
@@ -141,7 +142,10 @@ end
 M.generate_svg = function(svg_name, file_path)
 	local has_custom_extension = svg_name:match("%.[%w]+$")
 	local full_name = has_custom_extension and svg_name or (svg_name .. "." .. config_values.extension)
+
 	file_path = file_path or nil
+
+	svg_name = svg_name:match("(.+)%..+") or svg_name
 
 	if not file_exist(full_name) then
 		if file_path ~= nil and not file_exist(file_path) then

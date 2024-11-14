@@ -3,6 +3,7 @@ local file_exist = require("modules.utils.check_file_exist")
 local colors = require("modules.utils.colors")
 local validate_input = require("modules.utils.validate_input")
 local templates = require("modules.templates.templates")
+local error_messages = require("modules.utils.output_logs")
 
 local M = {}
 
@@ -44,14 +45,13 @@ M.generate_component = function(component_name, path)
 	elseif config_values.extension == "tsx" then
 		component = templates.component_template(component_name).component_tsx
 	else
-		print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
-		os.exit(1)
+		error_messages.critical_errors()["invalid_extension"]()
 	end
 
 	if not file_exist(full_name) then
 		local component_file = io.open(path .. "/" .. full_name, "w")
 		if not component_file then
-			print("ERROR: Unable to create component file")
+			error_messages.errors()["unable_to_create"]("component file")
 			return nil
 		end
 
@@ -81,7 +81,7 @@ M.generate_component = function(component_name, path)
 			local component_file = io.open(path .. "/" .. full_name, "w")
 
 			if not component_file then
-				print("ERROR: Unable to create component file")
+				error_messages.errors()["unable_to_create"]("component file")
 				return nil
 			end
 
@@ -122,14 +122,13 @@ M.generate_page = function(path, function_name)
 	elseif config_values.extension == "tsx" then
 		page = templates.component_template(function_name).component_tsx
 	else
-		print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
-		os.exit(1)
+		error_messages.critical_errors()["invalid_extension"]()
 	end
 
 	local page_file = io.open(path .. "/page." .. config_values.extension, "w")
 
 	if not page_file then
-		print("ERROR: Unable to create page file")
+		error_messages.errors()["unable_to_create"]("page file")
 		return nil
 	end
 
@@ -183,7 +182,7 @@ M.generate_svg = function(svg_name, file_path)
 				local svg_file = io.open(full_name, "w")
 
 				if not svg_file then
-					print("ERROR: Unable to create file containing the svg")
+					error_messages.errors()["unable_to_create"]("file containing the svg")
 					return nil
 				end
 
@@ -198,8 +197,7 @@ M.generate_svg = function(svg_name, file_path)
 				elseif config_values.extension == "tsx" then
 					svg = templates.svg_template(svg_name, nil).svg_tsx
 				else
-					print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
-					os.exit(1)
+					error_messages.critical_errors()["invalid_extension"]()
 				end
 
 				svg_file:write(svg)
@@ -220,14 +218,13 @@ M.generate_svg = function(svg_name, file_path)
 			elseif config_values.extension == "tsx" then
 				svg = templates.svg_template(svg_name, svg_content).svg_tsx
 			else
-				print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
-				os.exit(1)
+				error_messages.critical_errors()["invalid_extension"]()
 			end
 
 			local svg_file = io.open(full_name, "w")
 
 			if not svg_file then
-				print("ERROR: Unable to create file containing the svg")
+				error_messages.errors()["unable_to_create"]("file containing the svg")
 				return nil
 			end
 
@@ -245,14 +242,13 @@ M.generate_svg = function(svg_name, file_path)
 			elseif config_values.extension == "tsx" then
 				svg = templates.svg_template(svg_name, nil).svg_tsx
 			else
-				print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
-				os.exit(1)
+				error_messages.critical_errors()["invalid_extension"]()
 			end
 
 			local svg_file = io.open(full_name, "w")
 
 			if not svg_file then
-				print("ERROR: Unable to create file containing the svg")
+				error_messages.errors()["unable_to_create"]("file containing the svg")
 				return nil
 			end
 
@@ -303,7 +299,7 @@ M.generate_svg = function(svg_name, file_path)
 					local svg_file = io.open(full_name, "w")
 
 					if not svg_file then
-						print("ERROR: Unable to create file containing the svg")
+						error_messages.errors()["unable_to_create"]("file containing the svg")
 						return nil
 					end
 
@@ -318,8 +314,7 @@ M.generate_svg = function(svg_name, file_path)
 					elseif config_values.extension == "tsx" then
 						svg = templates.svg_template(svg_name, nil).svg_tsx
 					else
-						print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
-						os.exit(1)
+						error_messages.critical_errors()["invalid_extension"]()
 					end
 
 					svg_file:write(svg)
@@ -340,14 +335,13 @@ M.generate_svg = function(svg_name, file_path)
 				elseif config_values.extension == "tsx" then
 					svg = templates.svg_template(svg_name, svg_content).svg_tsx
 				else
-					print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
-					os.exit(1)
+					error_messages.critical_errors()["invalid_extension"]()
 				end
 
 				local svg_file = io.open(full_name, "w")
 
 				if not svg_file then
-					print("ERROR: Unable to create file containing the svg")
+					error_messages.errors()["unable_to_create"]("file containing the svg")
 					return nil
 				end
 
@@ -365,14 +359,13 @@ M.generate_svg = function(svg_name, file_path)
 				elseif config_values.extension == "tsx" then
 					svg = templates.svg_template(svg_name, nil).svg_tsx
 				else
-					print(colors.red .. "ERROR: Invalid extension encountered on your configs!" .. colors.reset)
-					os.exit(1)
+					error_messages.critical_errors()["invalid_extension"]()
 				end
 
 				local svg_file = io.open(full_name, "w")
 
 				if not svg_file then
-					print("ERROR: Unable to create file containing the svg")
+					error_messages.errors()["unable_to_create"]("file containing the svg")
 					return nil
 				end
 

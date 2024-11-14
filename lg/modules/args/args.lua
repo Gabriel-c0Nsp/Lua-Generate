@@ -1,22 +1,11 @@
 local colors = require("modules.utils.colors")
+local error_messages = require("modules.utils.output_logs")
 
 local lg_help = require("modules.args.options.lg_help")
 local lg_config = require("modules.args.options.lg_config")
 local lg_generate = require("modules.args.options.lg_generate")
 
 local M = {}
-
-local function invalid_arguments()
-	print(colors.red .. "Invalid arguments!" .. colors.reset)
-	print("You can try: lg --help for more information")
-	os.exit(1)
-end
-
-local function too_many_args()
-	print(colors.red .. "Too many arguments!" .. colors.reset)
-	print("You can try: lg --help for more information")
-	os.exit(1)
-end
 
 local function check_any_args(args)
 	if #args == 0 then
@@ -34,7 +23,7 @@ local function in_case_generate(args)
 	else
 		if args[2] == "c" or args[2] == "component" then
 			if #args > 4 then
-				too_many_args()
+				error_messages.critical_errors()["too_many_args"]()
 			elseif #args == 2 then
 				print(colors.yellow .. "You need to provide a name for the component!" .. colors.reset)
 				print("You can try: lg --help for more information")
@@ -51,7 +40,7 @@ local function in_case_generate(args)
 				print("You can try: lg --help for more information")
 				os.exit(1)
 			elseif #args > 4 then
-				too_many_args()
+				error_messages.critical_errors()["too_many_args"]()
 			else
 				local page_path = args[3]
 				local function_name = args[4]
@@ -68,7 +57,7 @@ local function in_case_generate(args)
 				print("You can try: lg --help for more information")
 				os.exit(1)
 			elseif #args > 4 then
-				too_many_args()
+				error_messages.critical_errors()["too_many_args"]()
 			else
 				local svg_component_name = args[3]
 				local svg_file_path = args[4]
@@ -76,7 +65,7 @@ local function in_case_generate(args)
 				lg_generate.generate_svg(svg_component_name, svg_file_path)
 			end
 		else
-			invalid_arguments()
+			error_messages.critical_errors()["invalid_arguments"]()
 		end
 	end
 end
@@ -88,16 +77,16 @@ local function in_case_config(args)
 		if args[2] == "u" or args[2] == "update" then
 			lg_config.update_config()
 		else
-			invalid_arguments()
+			error_messages.critical_errors()["invalid_arguments"]()
 		end
 	else
-		too_many_args()
+		error_messages.critical_errors()["too_many_args"]()
 	end
 end
 
 local function in_case_help(args)
 	if #args > 1 then
-		too_many_args()
+		error_messages.critical_errors()["too_many_args"]()
 	else
 		lg_help.help_message()
 	end
@@ -112,7 +101,7 @@ M.check_args = function(args)
 	elseif args[1] == "h" or args[1] == "help" or args[1] == "--help" then
 		in_case_help(args)
 	else
-		invalid_arguments()
+		error_messages.critical_errors()["invalid_arguments"]()
 	end
 end
 

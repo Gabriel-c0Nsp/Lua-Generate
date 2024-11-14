@@ -1,13 +1,14 @@
 local colors = require("modules.utils.colors")
 local validate_input = require("modules.utils.validate_input")
+local default_config_values = require("modules.config.default_config_values")
 
 local M = {}
 
 M.generate_config = function()
-	local config = io.open("config.txt", "r")
+	local config = io.open("lg_config.txt", "r")
 
 	if not config then
-		config = io.open("config.txt", "w")
+		config = io.open("lg_config.txt", "w")
 
 		if not config then
 			print("ERROR: Unable to create config file")
@@ -21,28 +22,37 @@ M.generate_config = function()
 	end
 end
 
+-- TODO: Secure that the config file always will have at least default values
 M.get_config_values = function()
 	local config_values = {
-		style = "",
-		extension = "",
+		extension = default_config_values.extension,
+		style = default_config_values.style,
 	}
 
-	local config = io.open("config.txt", "r+")
+	local config = io.open("lg_config.txt", "r+")
 
 	if config then
 		for line in config:lines() do
 			-- ignore empty lines and comments
 			if not line:match("^%s*$") and not line:match("^%s*%*") then
-				-- capture the value of style in quotes
-				local style = line:match('style%s*=%s*"(.-)"')
-				if style then
-					config_values.style = style
-				end
-
 				-- capture the value of extension in quotes
 				local extension = line:match('extension%s*=%s*"(.-)"')
 				if extension then
-					config_values.extension = extension
+					if extension == "default" then
+						config_values.extension = default_config_values.extension
+					else
+						config_values.extension = extension
+					end
+				end
+
+				-- capture the value of style in quotes
+				local style = line:match('style%s*=%s*"(.-)"')
+				if style then
+					if style == "default" then
+						config_values.style = default_config_values.style
+					else
+						config_values.style = style
+					end
 				end
 			end
 		end
@@ -88,7 +98,7 @@ M.update_config = function()
 		print("What type of style tool do you want to use?")
 		print(colors.yellow .. "\nOPTIONS (you can enter the corresponding number):" .. colors.reset)
 		print("(1) CSS")
-		print("(2) Tailwind")
+		print("(2) tailwind")
 
 		io.write("--> ")
 		style = io.read()
@@ -99,7 +109,7 @@ M.update_config = function()
 		end
 	until validate_input(style, valid_style_input)
 
-	local updated_config = io.open("config.txt", "w+")
+	local updated_config = io.open("lg_config.txt", "w+")
 
 	if not updated_config then
 		print("ERROR: Unable to update config file")
@@ -119,15 +129,14 @@ M.update_config = function()
 		if style == "1" then
 			updated_config:write('style = "CSS"\n')
 		elseif style == "2" then
-			updated_config:write('style = "Tailwind"\n')
+			updated_config:write('style = "tailwind"\n')
 		end
 
 		os.execute("clear")
 		print(colors.green .. "Configuration updated successfully!" .. colors.reset)
 
-    updated_config:close()
+		updated_config:close()
 	end
-
 end
 
 return M

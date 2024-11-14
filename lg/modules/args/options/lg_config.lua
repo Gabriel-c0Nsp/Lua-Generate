@@ -9,7 +9,7 @@ local M = {}
 ]]
 M.show_config = function()
 	print(colors.yellow .. "Your current configuration is:" .. colors.reset)
-	os.execute("cat config.txt | tail -n +2")
+	os.execute("cat lg_config.txt | tail -n +2")
 end
 
 --[[

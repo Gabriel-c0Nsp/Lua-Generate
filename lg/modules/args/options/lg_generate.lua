@@ -117,8 +117,6 @@ M.generate_component = function(component_name, path)
 	end
 end
 
--- TODO: make the function name be the name of the last directory in the path provided
---  if the user does not provide a function name as an argument
 --[[
   Example:
     lg g p <directory_name>
@@ -129,14 +127,25 @@ end
 M.generate_page = function(path, function_name)
 	path = path or "./"
 
+	if not function_name then
+		if path:find("/") then
+			if path:sub(-1) == "/" then
+				-- remove the last slash
+				path = path:sub(1, -2)
+			end
+			-- get the last directory in the path
+			function_name = path:match(".+/(.+)")
+		else
+			function_name = path
+		end
+	end
+
 	-- Checks if "path" ends with a slash and, if it has, removes it
 	if path:sub(-1) == "/" then
 		path = path:sub(1, -2)
 	end
 
 	local page = get_component_template(function_name)
-	print(page)
-
 	local page_path = path .. "/page." .. config_values.extension
 
 	if file_exist(page_path) then

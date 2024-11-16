@@ -70,9 +70,7 @@ M.generate_component = function(component_name, path)
 	-- Creates the directory, if necessary
 	os.execute("mkdir -p " .. path)
 
-	local component
-
-	component = get_component_template(component_name)
+	local component = get_component_template(component_name)
 
 	if not file_exist(full_name) then
 		local component_file = io.open(path .. "/" .. full_name, "w")
@@ -119,7 +117,8 @@ M.generate_component = function(component_name, path)
 	end
 end
 
--- TODO: check if the page file already exists
+-- TODO: make the function name be the name of the last directory in the path provided
+--  if the user does not provide a function name as an argument
 --[[
   Example:
     lg g p <directory_name>
@@ -135,22 +134,58 @@ M.generate_page = function(path, function_name)
 		path = path:sub(1, -2)
 	end
 
-	os.execute("mkdir -p " .. path)
-	os.execute("touch " .. path .. "/page." .. config_values.extension)
+	local page = get_component_template(function_name)
+	print(page)
 
-	local page
+	local page_path = path .. "/page." .. config_values.extension
 
-	page = get_component_template(function_name)
+	if file_exist(page_path) then
+		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
+		local valid_options = { "y", "n" }
+		local answer
 
-	local page_file = io.open(path .. "/page." .. config_values.extension, "w")
+		repeat
+			print("Do you want to overwrite it? (y/N)")
+			io.write("--> ")
+			answer = io.read()
+			answer = answer:lower()
 
-	if not page_file then
-		error_messages.errors()["unable_to_create"]("page file")
-		return nil
+			if answer == "" then
+				answer = "n"
+			end
+
+			if not validate_input(answer, valid_options) then
+				print(colors.red .. "Invalid input. Please try again." .. colors.reset)
+			end
+		until validate_input(answer, valid_options)
+
+		if answer == "y" then
+			local page_file = io.open(path .. "/page." .. config_values.extension, "w")
+
+			if not page_file then
+				error_messages.errors()["unable_to_create"]("page file")
+				return nil
+			end
+
+			page_file:write(page)
+			page_file:close()
+		else
+			print(colors.yellow .. "Operation canceled" .. colors.reset)
+		end
+	else
+		os.execute("mkdir -p " .. path)
+		os.execute("touch " .. path .. "/page." .. config_values.extension)
+
+		local page_file = io.open(path .. "/page." .. config_values.extension, "w")
+
+		if not page_file then
+			error_messages.errors()["unable_to_create"]("page")
+			return nil
+		end
+
+		page_file:write(page)
+		page_file:close()
 	end
-
-	page_file:write(page)
-	page_file:close()
 end
 
 -- TODO: Create functions to to simplify how svg files are created
@@ -203,9 +238,7 @@ M.generate_svg = function(svg_name, file_path)
 					return nil
 				end
 
-				local svg
-
-				svg = get_svg_template(svg_name, nil)
+				local svg = get_svg_template(svg_name, nil)
 
 				svg_file:write(svg)
 				svg_file:close()
@@ -228,9 +261,7 @@ M.generate_svg = function(svg_name, file_path)
 			svg_file:write(svg)
 			svg_file:close()
 		else
-			local svg
-
-			svg = get_svg_template(svg_name, nil)
+			local svg = get_svg_template(svg_name, nil)
 
 			local svg_file = io.open(full_name, "w")
 
@@ -290,9 +321,7 @@ M.generate_svg = function(svg_name, file_path)
 						return nil
 					end
 
-					local svg
-
-					svg = get_svg_template(svg_name, nil)
+					local svg = get_svg_template(svg_name, nil)
 
 					svg_file:write(svg)
 					svg_file:close()
@@ -301,9 +330,7 @@ M.generate_svg = function(svg_name, file_path)
 				end
 			elseif file_path ~= nil and file_exist(file_path) then
 				local svg_content = io.open(file_path):read("*a"):match("<svg.->(.-)</svg>")
-				local svg
-
-				svg = get_svg_template(svg_name, svg_content)
+				local svg = get_svg_template(svg_name, svg_content)
 
 				local svg_file = io.open(full_name, "w")
 
@@ -315,9 +342,7 @@ M.generate_svg = function(svg_name, file_path)
 				svg_file:write(svg)
 				svg_file:close()
 			else
-				local svg
-
-				svg = get_svg_template(svg_name, nil)
+				local svg = get_svg_template(svg_name, nil)
 
 				local svg_file = io.open(full_name, "w")
 

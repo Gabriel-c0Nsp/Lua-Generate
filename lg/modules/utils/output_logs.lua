@@ -28,6 +28,7 @@ M.errors = function()
 			print(colors.red .. "ERROR: Unable to create " .. target_file .. colors.reset)
 		end,
 	}
+  return messages
 end
 
 return M

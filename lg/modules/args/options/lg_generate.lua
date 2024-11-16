@@ -9,6 +9,42 @@ local M = {}
 
 local config_values = config.get_config_values()
 
+local function get_component_template(component_name)
+	local component_template
+
+	if config_values.extension == "js" then
+		component_template = templates.component_template(component_name).component_js
+	elseif config_values.extension == "jsx" then
+		component_template = templates.component_template(component_name).component_jsx
+	elseif config_values.extension == "ts" then
+		component_template = templates.component_template(component_name).component_ts
+	elseif config_values.extension == "tsx" then
+		component_template = templates.component_template(component_name).component_tsx
+	else
+		error_messages.critical_errors()["invalid_extension"]()
+	end
+
+	return component_template
+end
+
+local function get_svg_template(svg_name, svg_content)
+	local svg_template
+
+	if config_values.extension == "js" then
+		svg_template = templates.svg_template(svg_name, svg_content).svg_js
+	elseif config_values.extension == "jsx" then
+		svg_template = templates.svg_template(svg_name, svg_content).svg_jsx
+	elseif config_values.extension == "ts" then
+		svg_template = templates.svg_template(svg_name, svg_content).svg_ts
+	elseif config_values.extension == "tsx" then
+		svg_template = templates.svg_template(svg_name, svg_content).svg_tsx
+	else
+		error_messages.critical_errors()["invalid_extension"]()
+	end
+
+	return svg_template
+end
+
 --[[
   Example:
     lg g c <component_name>
@@ -36,17 +72,7 @@ M.generate_component = function(component_name, path)
 
 	local component
 
-	if config_values.extension == "js" then
-		component = templates.component_template(component_name).component_js
-	elseif config_values.extension == "jsx" then
-		component = templates.component_template(component_name).component_jsx
-	elseif config_values.extension == "ts" then
-		component = templates.component_template(component_name).component_ts
-	elseif config_values.extension == "tsx" then
-		component = templates.component_template(component_name).component_tsx
-	else
-		error_messages.critical_errors()["invalid_extension"]()
-	end
+	component = get_component_template(component_name)
 
 	if not file_exist(full_name) then
 		local component_file = io.open(path .. "/" .. full_name, "w")
@@ -93,6 +119,7 @@ M.generate_component = function(component_name, path)
 	end
 end
 
+-- TODO: check if the page file already exists
 --[[
   Example:
     lg g p <directory_name>
@@ -113,17 +140,7 @@ M.generate_page = function(path, function_name)
 
 	local page
 
-	if config_values.extension == "js" then
-		page = templates.component_template(function_name).component_js
-	elseif config_values.extension == "jsx" then
-		page = templates.component_template(function_name).component_jsx
-	elseif config_values.extension == "ts" then
-		page = templates.component_template(function_name).component_ts
-	elseif config_values.extension == "tsx" then
-		page = templates.component_template(function_name).component_tsx
-	else
-		error_messages.critical_errors()["invalid_extension"]()
-	end
+	page = get_component_template(function_name)
 
 	local page_file = io.open(path .. "/page." .. config_values.extension, "w")
 
@@ -188,17 +205,7 @@ M.generate_svg = function(svg_name, file_path)
 
 				local svg
 
-				if config_values.extension == "js" then
-					svg = templates.svg_template(svg_name, nil).svg_js
-				elseif config_values.extension == "jsx" then
-					svg = templates.svg_template(svg_name, nil).svg_jsx
-				elseif config_values.extension == "ts" then
-					svg = templates.svg_template(svg_name, nil).svg_ts
-				elseif config_values.extension == "tsx" then
-					svg = templates.svg_template(svg_name, nil).svg_tsx
-				else
-					error_messages.critical_errors()["invalid_extension"]()
-				end
+				svg = get_svg_template(svg_name, nil)
 
 				svg_file:write(svg)
 				svg_file:close()
@@ -209,17 +216,7 @@ M.generate_svg = function(svg_name, file_path)
 			local svg_content = io.open(file_path):read("*a"):match("<svg.->(.-)</svg>")
 			local svg
 
-			if config_values.extension == "js" then
-				svg = templates.svg_template(svg_name, svg_content).svg_js
-			elseif config_values.extension == "jsx" then
-				svg = templates.svg_template(svg_name, svg_content).svg_jsx
-			elseif config_values.extension == "ts" then
-				svg = templates.svg_template(svg_name, svg_content).svg_ts
-			elseif config_values.extension == "tsx" then
-				svg = templates.svg_template(svg_name, svg_content).svg_tsx
-			else
-				error_messages.critical_errors()["invalid_extension"]()
-			end
+			svg = get_svg_template(svg_name, svg_content)
 
 			local svg_file = io.open(full_name, "w")
 
@@ -233,17 +230,7 @@ M.generate_svg = function(svg_name, file_path)
 		else
 			local svg
 
-			if config_values.extension == "js" then
-				svg = templates.svg_template(svg_name, nil).svg_js
-			elseif config_values.extension == "jsx" then
-				svg = templates.svg_template(svg_name, nil).svg_jsx
-			elseif config_values.extension == "ts" then
-				svg = templates.svg_template(svg_name, nil).svg_ts
-			elseif config_values.extension == "tsx" then
-				svg = templates.svg_template(svg_name, nil).svg_tsx
-			else
-				error_messages.critical_errors()["invalid_extension"]()
-			end
+			svg = get_svg_template(svg_name, nil)
 
 			local svg_file = io.open(full_name, "w")
 
@@ -305,17 +292,7 @@ M.generate_svg = function(svg_name, file_path)
 
 					local svg
 
-					if config_values.extension == "js" then
-						svg = templates.svg_template(svg_name, nil).svg_js
-					elseif config_values.extension == "jsx" then
-						svg = templates.svg_template(svg_name, nil).svg_jsx
-					elseif config_values.extension == "ts" then
-						svg = templates.svg_template(svg_name, nil).svg_ts
-					elseif config_values.extension == "tsx" then
-						svg = templates.svg_template(svg_name, nil).svg_tsx
-					else
-						error_messages.critical_errors()["invalid_extension"]()
-					end
+					svg = get_svg_template(svg_name, nil)
 
 					svg_file:write(svg)
 					svg_file:close()
@@ -326,17 +303,7 @@ M.generate_svg = function(svg_name, file_path)
 				local svg_content = io.open(file_path):read("*a"):match("<svg.->(.-)</svg>")
 				local svg
 
-				if config_values.extension == "js" then
-					svg = templates.svg_template(svg_name, svg_content).svg_js
-				elseif config_values.extension == "jsx" then
-					svg = templates.svg_template(svg_name, svg_content).svg_jsx
-				elseif config_values.extension == "ts" then
-					svg = templates.svg_template(svg_name, svg_content).svg_ts
-				elseif config_values.extension == "tsx" then
-					svg = templates.svg_template(svg_name, svg_content).svg_tsx
-				else
-					error_messages.critical_errors()["invalid_extension"]()
-				end
+				svg = get_svg_template(svg_name, svg_content)
 
 				local svg_file = io.open(full_name, "w")
 
@@ -350,17 +317,7 @@ M.generate_svg = function(svg_name, file_path)
 			else
 				local svg
 
-				if config_values.extension == "js" then
-					svg = templates.svg_template(svg_name, nil).svg_js
-				elseif config_values.extension == "jsx" then
-					svg = templates.svg_template(svg_name, nil).svg_jsx
-				elseif config_values.extension == "ts" then
-					svg = templates.svg_template(svg_name, nil).svg_ts
-				elseif config_values.extension == "tsx" then
-					svg = templates.svg_template(svg_name, nil).svg_tsx
-				else
-					error_messages.critical_errors()["invalid_extension"]()
-				end
+				svg = get_svg_template(svg_name, nil)
 
 				local svg_file = io.open(full_name, "w")
 

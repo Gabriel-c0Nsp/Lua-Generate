@@ -1,6 +1,6 @@
 local default_config_values = {
-  extension = "ts",
-  style = "tailwind"
+  extension = "js",
+  style = "CSS"
 }
 
 return default_config_values

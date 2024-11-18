@@ -45,6 +45,12 @@ local function get_svg_template(svg_name, svg_content)
 	return svg_template
 end
 
+local function generate_css_file(component_name, path)
+	if config_values.style == "CSS" then
+		io.open(path .. "/" .. component_name .. ".css", "w"):close()
+	end
+end
+
 --[[
   Example:
     lg g c <component_name>
@@ -74,6 +80,8 @@ M.generate_component = function(component_name, path)
 
 	if not file_exist(full_name) then
 		local component_file = io.open(path .. "/" .. full_name, "w")
+		generate_css_file(component_name, path)
+
 		if not component_file then
 			error_messages.errors()["unable_to_create"]("component file")
 			return nil
@@ -103,6 +111,7 @@ M.generate_component = function(component_name, path)
 
 		if answer == "y" then
 			local component_file = io.open(path .. "/" .. full_name, "w")
+      generate_css_file(component_name, path)
 
 			if not component_file then
 				error_messages.errors()["unable_to_create"]("component file")

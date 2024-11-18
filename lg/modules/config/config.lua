@@ -22,7 +22,23 @@ M.generate_config = function()
 	end
 end
 
--- TODO: Secure that the config file always will have at least default values
+local function check_valid_config()
+	local config_file = io.open("lg_config.txt", "r")
+
+	if config_file then
+		local config_file_content = config_file:read("*all")
+
+		config_file:close()
+		if config_file_content:match('extension%s*=%s*"(.-)"') and config_file_content:match('style%s*=%s*"(.-)"') then
+			return true
+		end
+		return false
+	else
+		M.generate_config()
+	end
+end
+
+-- TODO: Secure that the style and extension values are valid ones (js, jsx, ts, tsx, CSS, tailwind)
 M.get_config_values = function()
 	local config_values = {
 		extension = default_config_values.extension,
@@ -37,6 +53,7 @@ M.get_config_values = function()
 			if not line:match("^%s*$") and not line:match("^%s*%*") then
 				-- capture the value of extension in quotes
 				local extension = line:match('extension%s*=%s*"(.-)"')
+
 				if extension then
 					if extension == "default" then
 						config_values.extension = default_config_values.extension
@@ -47,6 +64,7 @@ M.get_config_values = function()
 
 				-- capture the value of style in quotes
 				local style = line:match('style%s*=%s*"(.-)"')
+
 				if style then
 					if style == "default" then
 						config_values.style = default_config_values.style
@@ -56,6 +74,16 @@ M.get_config_values = function()
 				end
 			end
 		end
+	end
+
+	if not check_valid_config() then
+		print(colors.red .. "Invalid configuration file!" .. colors.reset)
+		print(colors.yellow .. "Generating new configuration file..." .. colors.reset)
+
+		os.execute("rm lg_config.txt")
+		M.generate_config()
+
+		os.exit(1)
 	end
 
 	return config_values

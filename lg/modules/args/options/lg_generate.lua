@@ -135,8 +135,13 @@ M.generate_component = function(component_name, path)
 		until validate_input(answer, valid_options)
 
 		if answer == "y" then
-			local component_file = io.open(path .. "/" .. full_name, "w")
-			generate_css_file(component_name, path)
+			if path then
+				component_file = io.open(path .. "/" .. full_name, "w")
+				generate_css_file(component_name, path)
+			else
+				component_file = io.open(full_name, "w")
+				generate_css_file(component_name, "./")
+			end
 
 			if not component_file then
 				error_messages.errors()["unable_to_create"]("component file")

@@ -32,6 +32,10 @@ local function in_case_generate(args)
 				local component_name = args[3]
 				local compoment_path = args[4]
 
+				if args[4] ~= nil then
+					compoment_path = args[4]
+				end
+
 				lg_generate.generate_component(component_name, compoment_path)
 			end
 		elseif args[2] == "p" or args[2] == "page" then

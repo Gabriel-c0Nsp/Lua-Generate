@@ -8,7 +8,7 @@ local M = {}
     lg config
 ]]
 M.show_config = function()
-	print(colors.yellow .. "Your current configuration is:" .. colors.reset)
+	print(colors.green .. "Your current configuration is:" .. colors.reset)
 	os.execute("cat lg_config.txt | tail -n +2")
 end
 

@@ -61,7 +61,7 @@ end
 M.generate_component = function(component_name, path)
 	if component_name:find("/") and path then
 		print(colors.yellow .. "You provided two paths for the component! This is not allowed" .. colors.reset)
-    os.exit(1)
+		os.exit(1)
 	end
 
 	if not path then
@@ -86,18 +86,26 @@ M.generate_component = function(component_name, path)
 	component_name = component_name:match("(.+)%..+") or component_name
 
 	-- Checks if "path" ends with a slash and, if not, adds one
-	if path:sub(-1) ~= "/" then
-		path = path .. "/"
+	if path then
+		if path:sub(-1) ~= "/" then
+			path = path .. "/"
+
+			-- Creates the directory, if necessary
+			os.execute("mkdir -p " .. path)
+		end
 	end
 
-	-- Creates the directory, if necessary
-	os.execute("mkdir -p " .. path)
-
 	local component = get_component_template(component_name)
+	local component_file
 
 	if not file_exist(full_name) then
-		local component_file = io.open(path .. "/" .. full_name, "w")
-		generate_css_file(component_name, path)
+		if path then
+			component_file = io.open(path .. "/" .. full_name, "w")
+			generate_css_file(component_name, path)
+		else
+			component_file = io.open(full_name, "w")
+			generate_css_file(component_name, "./")
+		end
 
 		if not component_file then
 			error_messages.errors()["unable_to_create"]("component file")

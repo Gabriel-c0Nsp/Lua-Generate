@@ -1,6 +1,7 @@
 local colors = require("modules.utils.colors")
 local error_messages = require("modules.utils.output_logs")
 
+local config = require("modules.config.config")
 local lg_help = require("modules.args.options.lg_help")
 local lg_config = require("modules.args.options.lg_config")
 local lg_generate = require("modules.args.options.lg_generate")
@@ -106,7 +107,9 @@ end
 
 M.check_args = function(args)
 	check_any_args(args)
-	if args[1] == "c" or args[1] == "config" then
+	if args[1] == "i" or args[1] == "init" then
+    config.init()
+	elseif args[1] == "c" or args[1] == "config" then
 		in_case_config(args)
 	elseif args[1] == "g" or args[1] == "generate" then
 		in_case_generate(args)

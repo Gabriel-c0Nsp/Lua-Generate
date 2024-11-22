@@ -4,11 +4,6 @@ local default_config_values = require("modules.config.default_config_values")
 
 local M = {}
 
-M.get_root = function()
-	local lg_root = os.getenv("PWD")
-	return lg_root
-end
-
 M.generate_config = function(path)
 	local config = io.open(path .. "/lg_config.txt", "r")
 
@@ -29,12 +24,16 @@ M.generate_config = function(path)
 end
 
 M.init = function()
-	print(M.get_root())
-	M.generate_config(M.get_root())
+  local lg_init = os.getenv("PWD")
+	M.generate_config(lg_init)
 end
 
--- FIXME: It just creates a new config in the directory the user are (if it doesn't exist)
--- TODO: Check if a config file is valid (only on the root of the project)
+-- FIXME: It needs to go to the config file and get the root (but for that, i'll need the root)
+M.get_root = function()
+
+	return lg_root
+end
+
 local function check_valid_config()
 	local config_file = io.open(M.get_root() .. "/lg_config.txt", "r")
 
@@ -44,10 +43,12 @@ local function check_valid_config()
 		config_file:close()
 		if config_file_content:match('extension%s*=%s*"(.-)"') and config_file_content:match('style%s*=%s*"(.-)"') then
 			return true
+		else
+			return false
 		end
-		return false
 	else
-		M.generate_config(M.get_root())
+		-- M.generate_config(M.get_root())
+    print(M.get_root())
 	end
 end
 
@@ -114,8 +115,12 @@ M.get_config_values = function()
 		print(colors.red .. "Invalid configuration file!" .. colors.reset)
 		print(colors.yellow .. "Generating new configuration file..." .. colors.reset)
 
-		os.execute("rm " .. M.get_root() .. "/lg_config.txt")
-		M.generate_config(M.get_root())
+    print(check_valid_config())
+    print(valid_style)
+    print(valid_extension)
+
+		-- os.execute("rm " .. M.get_root() .. "/lg_config.txt")
+		-- M.generate_config(M.get_root())
 
 		os.exit(1)
 	end

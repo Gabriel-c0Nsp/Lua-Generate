@@ -7,9 +7,9 @@ local error_messages = require("modules.utils.output_logs")
 
 local M = {}
 
-local config_values = config.get_config_values()
-
 local function get_component_template(component_name)
+	local config_values = config.get_config_values()
+
 	local component_template
 
 	if config_values.extension == "js" then
@@ -28,6 +28,8 @@ local function get_component_template(component_name)
 end
 
 local function get_svg_template(svg_name, svg_content)
+	local config_values = config.get_config_values()
+
 	local svg_template
 
 	if config_values.extension == "js" then
@@ -46,6 +48,8 @@ local function get_svg_template(svg_name, svg_content)
 end
 
 local function generate_css_file(component_name, path)
+	local config_values = config.get_config_values()
+
 	if config_values.style == "CSS" then
 		io.open(path .. "/" .. component_name .. ".css", "w"):close()
 	end
@@ -59,6 +63,8 @@ end
     lg generate c <component_name> <path>
 ]]
 M.generate_component = function(component_name, path)
+	local config_values = config.get_config_values()
+
 	if component_name:find("/") and path then
 		print(colors.yellow .. "You provided two paths for the component! This is not allowed" .. colors.reset)
 		os.exit(1)
@@ -164,6 +170,8 @@ end
     lg generate page <directory_name>
 ]]
 M.generate_page = function(function_name, path)
+	local config_values = config.get_config_values()
+
 	path = path or "./"
 
 	if not function_name then
@@ -244,6 +252,8 @@ end
     lg generate svg <file_name> <file_path>
 ]]
 M.generate_svg = function(svg_name, file_path)
+	local config_values = config.get_config_values()
+
 	local has_custom_extension = svg_name:match("%.[%w]+$")
 	local full_name = has_custom_extension and svg_name or (svg_name .. "." .. config_values.extension)
 

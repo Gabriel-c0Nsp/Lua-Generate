@@ -8,6 +8,9 @@ local M = {}
     lg config
 ]]
 M.show_config = function()
+  -- this will check if the config file is valid
+  config.get_config_values()
+
 	print(colors.green .. "Your current configuration is:" .. colors.reset)
 	os.execute("cat " .. config.lg_root() .. "/lg_config.txt | tail -n +3")
 end

@@ -25,7 +25,6 @@ M.generate_config = function(path)
 	end
 end
 
--- TODO: document this function in lg --help
 M.init = function()
 	local lg_init = lfs.currentdir()
 	M.generate_config(lg_init)

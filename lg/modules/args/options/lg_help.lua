@@ -19,6 +19,10 @@ M.help_message = function()
   up to the user.
 
   Commands:
+    %slg i%s - Initialize Lua Generate in the current directory (root of the project)
+      Alternative syntax:
+        - lg init
+
     %slg c%s - Show the current configuration 
       Alternative syntax:
         - lg config
@@ -65,6 +69,8 @@ M.help_message = function()
     [path]              - Optional. The path where the file or directory should be created ]],
 		colors.bold,
 		colors.reset,
+    colors.green,
+    colors.reset,
 		colors.green,
 		colors.reset,
 		colors.green,

@@ -2,8 +2,6 @@ local colors = require("modules.utils.colors")
 local validate_input = require("modules.utils.validate_input")
 local default_config_values = require("modules.config.default_config_values")
 
-local lfs = require("lfs")
-
 local M = {}
 
 M.generate_config = function(path)
@@ -26,12 +24,12 @@ M.generate_config = function(path)
 end
 
 M.init = function()
-	local lg_init = lfs.currentdir()
+	local lg_init = os.getenv("PWD")
 	M.generate_config(lg_init)
 end
 
 M.root_dir = function()
-	local lg_root = lfs.currentdir()
+	local lg_root = os.getenv("PWD")
 
 	return lg_root
 end

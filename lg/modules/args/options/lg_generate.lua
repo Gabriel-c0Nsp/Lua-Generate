@@ -10,10 +10,10 @@ local M = {}
 local function get_component_template(component_name)
 	local config_values = config.get_config_values()
 
-  if config_values == nil then
-    error_messages.critical_errors()["no_config_file"]()
-    return
-  end
+	if config_values == nil then
+		error_messages.critical_errors()["no_config_file"]()
+		return
+	end
 
 	local component_template
 
@@ -35,10 +35,10 @@ end
 local function get_svg_template(svg_name, svg_content)
 	local config_values = config.get_config_values()
 
-  if config_values == nil then
-    error_messages.critical_errors()["no_config_file"]()
-    return
-  end
+	if config_values == nil then
+		error_messages.critical_errors()["no_config_file"]()
+		return
+	end
 
 	local svg_template
 
@@ -60,10 +60,10 @@ end
 local function generate_css_file(component_name, path)
 	local config_values = config.get_config_values()
 
-  if config_values == nil then
-    error_messages.critical_errors()["no_config_file"]()
-    return
-  end
+	if config_values == nil then
+		error_messages.critical_errors()["no_config_file"]()
+		return
+	end
 
 	if config_values.style == "CSS" then
 		io.open(path .. "/" .. component_name .. ".css", "w"):close()
@@ -80,10 +80,10 @@ end
 M.generate_component = function(component_name, path)
 	local config_values = config.get_config_values()
 
-  if config_values == nil then
-    error_messages.critical_errors()["no_config_file"]()
-    return
-  end
+	if config_values == nil then
+		error_messages.critical_errors()["no_config_file"]()
+		return
+	end
 
 	if component_name:find("/") and path then
 		print(colors.yellow .. "You provided two paths for the component! This is not allowed" .. colors.reset)
@@ -192,10 +192,10 @@ end
 M.generate_page = function(function_name, path)
 	local config_values = config.get_config_values()
 
-  if config_values == nil then
-    error_messages.critical_errors()["no_config_file"]()
-    return
-  end
+	if config_values == nil then
+		error_messages.critical_errors()["no_config_file"]()
+		return
+	end
 
 	path = path or "./"
 
@@ -279,10 +279,10 @@ end
 M.generate_svg = function(svg_name, file_path)
 	local config_values = config.get_config_values()
 
-  if config_values == nil then
-    error_messages.critical_errors()["no_config_file"]()
-    return
-  end
+	if config_values == nil then
+		error_messages.critical_errors()["no_config_file"]()
+		return
+	end
 
 	local has_custom_extension = svg_name:match("%.[%w]+$")
 	local full_name = has_custom_extension and svg_name or (svg_name .. "." .. config_values.extension)

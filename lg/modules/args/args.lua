@@ -108,7 +108,7 @@ end
 M.check_args = function(args)
 	check_any_args(args)
 	if args[1] == "i" or args[1] == "init" then
-    config.init()
+		config.init()
 	elseif args[1] == "c" or args[1] == "config" then
 		in_case_config(args)
 	elseif args[1] == "g" or args[1] == "generate" then

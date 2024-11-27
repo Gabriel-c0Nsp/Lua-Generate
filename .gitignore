@@ -41,3 +41,6 @@ luac.out
 
 # Development script
 lg/lg_dev.sh
+
+# Not necessary 
+lg/lg

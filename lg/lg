@@ -1,3 +1,0 @@
-#!/bin/bash
-
-lua ~/repos/lg-react/lg/init.lua "$@"

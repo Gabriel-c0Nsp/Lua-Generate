@@ -6,17 +6,6 @@ With support for file extension customization (e.g., `.js`, `.jsx`, `.ts`, `.tsx
 
 ---
 
-## Try the `help` Command
-
-Before diving in, explore the available features using the help command in your terminal:
-
-```bash
-lg --help
-```
-This command will display all available options, commands, and their alternative syntaxes, helping you get familiar with the tool.
-
----
-
 ## Dependencies
 
 To run **Lua Generate**, you’ll need to have the following dependencies installed on your system:
@@ -55,3 +44,35 @@ To run **Lua Generate**, you’ll need to have the following dependencies instal
    **Lua Generate** is designed to run on Linux-based systems and macOS (due to their Unix-like environment). 
 
    **Currently, Windows is not supported**. If you're using Windows, you can consider running Lua Generate inside a Linux-like environment, such as [WSL (Windows Subsystem for Linux)](https://docs.microsoft.com/en-us/windows/wsl/) or using a virtual machine.
+
+---
+
+## How to install
+
+First, you need to clone the repository.
+```bash
+git clone https://github.com/Gabriel-c0Nsp/Lua-Generate 
+```
+Then you can navigate to the directory where the installation script lives.
+```bash
+cd Lua-Generate/lg
+```
+You need to give executable permission to lg_install.sh in order to proceed with the installation.
+```bash
+chmod +x ./lg_install.sh
+```
+Now, simply run the following command:
+```bash
+./lg_install.sh
+```
+
+---
+
+## Try the `help` Command
+
+Before diving in, explore the available features using the help command in your terminal:
+
+```bash
+lg --help
+```
+This command will display all available options, commands, and their alternative syntaxes, helping you get familiar with the tool.

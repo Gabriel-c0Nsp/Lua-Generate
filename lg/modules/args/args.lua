@@ -16,6 +16,15 @@ local function check_any_args(args)
 	end
 end
 
+-- TODO: add a flag that alows user to add lg_config.txt to .gitignore
+local function in_case_init(args)
+  if #args > 1 then
+    error_messages.critical_errors()["too_many_args"]()
+    os.exit(1)
+  end
+		config.init()
+end
+
 local function in_case_generate(args)
 	if #args == 1 then
 		print(colors.yellow .. "You need to specify what you want to generate!" .. colors.reset)
@@ -108,7 +117,7 @@ end
 M.check_args = function(args)
 	check_any_args(args)
 	if args[1] == "i" or args[1] == "init" then
-		config.init()
+    in_case_init(args)
 	elseif args[1] == "c" or args[1] == "config" then
 		in_case_config(args)
 	elseif args[1] == "g" or args[1] == "generate" then

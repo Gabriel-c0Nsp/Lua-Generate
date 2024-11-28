@@ -14,7 +14,7 @@ sudo cp -r $LG_MODULES /usr/lib/lua/5.3/
 
 # it will make sure that the command will not be
 # appended multiple times to the file
-if [[ ! -f lg ]]; then
+if [[ -f lg ]]; then
   rm lg
 fi
 

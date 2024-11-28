@@ -16,13 +16,58 @@ local function check_any_args(args)
 	end
 end
 
--- TODO: add a flag that alows user to add lg_config.txt to .gitignore
+local function git_repo(current_dir)
+	current_dir = current_dir or os.getenv("PWD")
+
+	local git_path = current_dir .. "/.git"
+	if os.execute("[ -d " .. git_path .. " ]") then
+		return current_dir
+	end
+
+	local parent_dir = current_dir:match("^(.*)/[^/]+$")
+	if not parent_dir or parent_dir == current_dir then
+		print(colors.red .. "ERROR: This is not a git repository!" .. colors.reset)
+		print("You can try: lg --help for more information")
+		os.exit(1)
+	end
+
+	return git_repo(parent_dir)
+end
+
+local function sub_path(greater_path, smaller_path)
+	if greater_path:find(smaller_path, 1, true) == 1 then
+		return greater_path:sub(smaller_path:len() + 2)
+	end
+	return greater_path
+end
+
 local function in_case_init(args)
-  if #args > 1 then
-    error_messages.critical_errors()["too_many_args"]()
-    os.exit(1)
-  end
-		config.init()
+	if #args > 2 then
+		error_messages.critical_errors()["too_many_args"]()
+	end
+
+	if #args == 2 then
+		if args[2] == "-s" or args[2] == "-silent" then
+			local lg_config_path = os.getenv("PWD")
+
+			local git_path = git_repo()
+			local gitignore_file = io.open(git_path .. "/.gitignore", "a+")
+
+			lg_config_path = sub_path(lg_config_path, git_path)
+
+			if gitignore_file then
+				gitignore_file:write("\n# configuration file for Lua Generate\n")
+				gitignore_file:write(lg_config_path .. "/lg_config.txt")
+				gitignore_file:close()
+			else
+				error_messages.errors()["unable_to_create"](".gitignore")
+			end
+		else
+			error_messages.critical_errors()["invalid_arguments"]()
+		end
+	end
+
+	config.init()
 end
 
 local function in_case_generate(args)
@@ -117,7 +162,7 @@ end
 M.check_args = function(args)
 	check_any_args(args)
 	if args[1] == "i" or args[1] == "init" then
-    in_case_init(args)
+		in_case_init(args)
 	elseif args[1] == "c" or args[1] == "config" then
 		in_case_config(args)
 	elseif args[1] == "g" or args[1] == "generate" then

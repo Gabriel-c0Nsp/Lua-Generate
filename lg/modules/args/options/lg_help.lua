@@ -19,9 +19,11 @@ M.help_message = function()
   up to the user.
 
   Commands:
-    %slg i%s - Initialize Lua Generate in the current directory (root of the project)
+    %slg i%s - Initialize Lua Generate in the current directory
       Alternative syntax:
         - lg init
+      Optional flags:
+        -s or -silent: It will automatically put your configuration file inside .gitignore
 
     %slg c%s - Show the current configuration 
       Alternative syntax:

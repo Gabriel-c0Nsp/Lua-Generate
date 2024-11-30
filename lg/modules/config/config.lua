@@ -51,10 +51,10 @@ M.lg_root = function(current_dir)
 
 	-- If it can't go down anymore (reached the system root directory), return nil
 	if not parent_dir or parent_dir == current_dir then
-    print(colors.red .. "ERROR: Unable to find lg_config.txt file" .. colors.reset)
-    print(colors.yellow .. "Please run 'lg init' in the root directory of your project" .. colors.reset)
+		print(colors.red .. "ERROR: Unable to find lg_config.txt file" .. colors.reset)
+		print(colors.yellow .. "Please run 'lg init' in the root directory of your project" .. colors.reset)
 		print("You can try: lg --help for more information")
-    os.exit(1)
+		os.exit(1)
 	end
 
 	return M.lg_root(parent_dir)

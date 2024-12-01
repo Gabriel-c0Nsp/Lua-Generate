@@ -86,14 +86,14 @@ M.generate_component = function(component_name, path)
 	end
 
 	if component_name:find("/") and path then
-		print(colors.yellow .. "You provided two paths for the component! This is not allowed" .. colors.reset)
+		print(colors.red .. "You provided two paths for the component! This is not allowed" .. colors.reset)
 		os.exit(1)
 	end
 
 	if not path then
 		if component_name:find("/") then
 			if component_name:sub(-1) == "/" then
-				print(colors.yellow .. "ERROR: You need to provide a valid component name!" .. colors.reset)
+				print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
 				os.exit(1)
 			end
 
@@ -197,17 +197,27 @@ M.generate_page = function(function_name, path)
 		return
 	end
 
-	path = path or "./"
+	if function_name:find("/") and path then
+		print(colors.red .. "You provided two paths! This is not allowed" .. colors.reset)
+		os.exit(1)
+	end
 
-	if not function_name then
-		if path:find("/") then
-			if path:sub(-1) == "/" then
-				path = path:sub(1, -2)
+	if not path then
+		if function_name:find("/") then
+			if function_name:sub(-1) == "/" then
+				print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
+				os.exit(1)
 			end
-			function_name = path:match(".+/(.+)")
-		else
-			function_name = path
+
+			-- get everything behind the last slash (including the slash)
+			path = function_name:match("(.+)/")
+			-- get the last directory in the path
+			function_name = function_name:match(".+/(.+)")
 		end
+	end
+
+	if not path then
+		path = "./"
 	end
 
 	local page = get_component_template(function_name)
@@ -235,7 +245,7 @@ M.generate_page = function(function_name, path)
 
 		if answer == "y" then
 			local page_file = io.open(path .. "/page." .. config_values.extension, "w")
-			generate_css_file(function_name, path)
+			generate_css_file("page", path)
 
 			if not page_file then
 				error_messages.errors()["unable_to_create"]("page file")
@@ -252,7 +262,7 @@ M.generate_page = function(function_name, path)
 		os.execute("touch " .. path .. "/page." .. config_values.extension)
 
 		local page_file = io.open(path .. "/page." .. config_values.extension, "w")
-		generate_css_file(function_name, path)
+		generate_css_file("page", path)
 
 		if not page_file then
 			error_messages.errors()["unable_to_create"]("page")

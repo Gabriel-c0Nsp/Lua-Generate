@@ -41,11 +41,11 @@ M.help_message = function()
         - lg g component <component_name> [path]
         - lg generate component <component_name> [path]
 
-    %slg g p %s<path> [function_name]%s - Generates a directory with a page file inside
+    %slg g p %s<function_name> [path]%s - Generates a directory with a page file inside
       Alternative syntax:
-        - lg generate p <path> [function_name]
-        - lg g page <path> [function_name]
-        - lg generate page <path> [function_name]
+        - lg generate p <function_name> [path]
+        - lg g page <function_name> [path]
+        - lg generate page <function_name> [path]
 
     %slg g s %s<svg_name> [target_file_path]%s - Creates a file with an SVG tag
       Alternative syntax:
@@ -65,8 +65,7 @@ M.help_message = function()
   Options:
     <component_name>    - The name of the component to generate
     <svg_name>          - The name of the SVG file to generate
-    <path>              - The path where the file or directory should be created
-    [function_name]     - The name of the function to generate
+    <function_name>     - The name of the function to generate
     [target_file_path]  - Optional. The path of the file to copy the SVG content from
     [path]              - Optional. The path where the file or directory should be created ]],
 		colors.bold,

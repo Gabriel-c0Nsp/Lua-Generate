@@ -76,3 +76,33 @@ Before diving in, explore the available features using the help command in your 
 lg --help
 ```
 This command will display all available options, commands, and their alternative syntaxes, helping you get familiar with the tool.
+
+---
+
+## Commands and features
+In this section, you will find a basic usage guide for each Lua Generate feature, including examples and alternative syntax for the same command.
+
+- ### lg init
+This command initializes the configuration file in the current directory. It is recommended to run it in the project's root directory.
+
+You can run the command as follows:
+
+```bash
+lg init
+```
+and the file `lg_config.txt` will be created in the current directory with some default settings.
+
+The `lg init` command also accepts a flag, `-silent`, which automatically adds the configuration file to the project's `.gitignore`.
+
+```bash
+lg init -silent
+```
+`-silent` will take care of finding your project's `.gitignore` file and adding the relative path that contains the configuration file created by `lg init`.
+
+|Explicit Syntax|Abbreviation|
+|---|---|
+|**lg init**|lg i|
+|**lg init -silent**|lg init -silent|
+||lg init -s|
+||lg i -silent|
+||lg i -s|

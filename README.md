@@ -106,3 +106,36 @@ lg init -silent
 ||lg init -s|
 ||lg i -silent|
 ||lg i -s|
+
+- ### lg config
+This command displays your current config (found in the configuration file `lg_config.txt`).
+
+You can try the command as follows:
+
+```bash
+lg config
+```
+You should see a message displaying information such as the styling type and file extensions that are configured. In the next section, you will learn how to safely modify the configuration file.
+
+|Explicit Syntax|Abbreviation|
+|---|---|
+|**lg config**|lg c|
+
+- ### lg config update
+This command runs the configuration script.
+
+Try the command and follow the instructions to configure **Lua Generate** according to your project's needs.
+
+```bash
+lg config update
+```
+
+After updating your config file, note that it is not necessary to run the `lg config update` command again each time you want to generate a file with a different extension. You can simply run the command `lg generate component <file_name>.desired_extension`. **Lua Generate** will not prevent you from creating files with arbitrary extensions. More information about the `lg generate component` command can be found in the next section.
+
+As mentioned before, `lg init` creates the configuration file `lg_config.txt`, and `lg config update` modifies the information within this file. The user, as the owner of their operating system, has full permission to edit the text file directly. Doing it may lead to unexpected behavior when accessing these settings. To prevent issues, **Lua Generate** always validates the `lg_config.txt` file before executing any function. If an invalid configuration is detected, it will automatically be replaced with a valid one using default values.
+
+|Explicit Syntax|Abbreviation|
+|---|---|
+|**lg config update**|lg config u|
+||lg c update|
+||lg c u|

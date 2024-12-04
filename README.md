@@ -139,3 +139,34 @@ As mentioned before, `lg init` creates the configuration file `lg_config.txt`, a
 |**lg config update**|lg config u|
 ||lg c update|
 ||lg c u|
+
+- ### lg generate component
+This will likely be your favorite command in this script. It creates a component with the extension selected in the configuration file, and depending on your "style" configuration, it can also generate additional files (such as a file with the provided component name but with a `.css` extension, for example).
+
+You can try it yourself with the following command:
+
+```bash
+lg generate component foo
+```
+
+The command also accepts a path indicating where the component should be created. If the path does not exist, Lua Generate will create the necessary directories corresponding to the path provided in the command argument.
+
+Try the example below and check the result using the `tree` command (you may need to install `tree` using your system's package manager).
+```bash
+lg generate component foo ./src/pages/examples/
+```
+
+As you get more familiar with the `lg generate component` command, you will notice that **Lua Generate** is quite flexible in how you create your components and will interpret what you are trying to do, even if the arguments are not arranged correctly. For example, note that the following command will create the component `foo`, even if it is placed in an argument that should be interpreted as a path.
+```bash
+lg generate component ./another/example/generation/foo
+```
+
+In this case, the `foo` component will be generated inside the `generation` directory. Again, you can check the result using the `tree` command.
+
+Keep in mind that the `lg generate component` command also detects when a component already exists in a directory. It will always prompt the user to choose whether to proceed with creating the component, overwriting the existing one, or abort the operation.
+
+|Explicit Syntax|Abbreviation|
+|---|---|
+|**lg generate component**|lg generate c|
+||lg g component|
+||lg g c|

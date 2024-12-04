@@ -170,3 +170,31 @@ Keep in mind that the `lg generate component` command also detects when a compon
 |**lg generate component**|lg generate c|
 ||lg g component|
 ||lg g c|
+
+- ### lg generate page
+This is the most specific command you will find in **Lua Generate**. All other commands are generally useful for React applications, but this command is particularly useful for applications using `Next.js`. The page system is essential in `Next.js` applications, so if you are not using this technology, you might not find much use for the `lg generate page` command.
+
+If you are familiar with `Next.js` applications, you likely have an idea of what this command does. Essentially, it creates a `page` file inside the directory specified by the user in the command's argument.
+
+Again, you can try the command below and check the result using the `tree` command.
+
+
+```bash
+lg generate page home ./pages/examples/lg-web-site/
+```
+
+Notice how the `lg generate page` command accepts the function name within the page file as the first argument. However, similar to the `lg generate component` command, `lg generate page` will also attempt to interpret the user's Intention based on the argument provided when running the command.
+
+See the example below:
+
+```bash
+lg generate page ./pages/examples/lg-web-site/home
+```
+
+This command will actually produce the same output as the previous command.
+
+|Explicit Syntax|Abbreviation|
+|---|---|
+|**lg generate page**|lg generate p|
+||lg g page|
+||lg g p|

@@ -198,3 +198,24 @@ This command will actually produce the same output as the previous command.
 |**lg generate page**|lg generate p|
 ||lg g page|
 ||lg g p|
+
+- ### lg generate svg
+This command simplifies the process of exporting .svg files to a function. This practice is very common in React applications.
+
+See an example of the command below:
+
+```bash
+lg generate svg Github ./assets/github.svg
+```
+
+This command will create a Github file (exporting a Github function as well) that returns an svg tag containing the contents of the `github.svg` file.
+
+Note that if the specified path in the argument for the svg file does not exist, a file will be created with the name provided in the argument, returning only an empty svg tag.
+
+The way `lg generate svg` works is by searching for the svg tag within the specified file using "match" functions from Lua's standard library. Therefore, you might need to format the content encapsulated by the svg tag within your generated file.
+
+|Explicit Syntax|Abbreviation|
+|---|---|
+|**lg generate svg**|lg generate s|
+||lg g svg|
+||lg g s|

@@ -67,7 +67,9 @@ M.help_message = function()
     <svg_name>          - The name of the SVG file to generate
     <function_name>     - The name of the function to generate
     [target_file_path]  - Optional. The path of the file to copy the SVG content from
-    [path]              - Optional. The path where the file or directory should be created ]],
+    [path]              - Optional. The path where the file or directory should be created 
+
+  See [%shttps://github.com/Gabriel-c0Nsp/Lua-Generate%s] for more information.]],
 		colors.bold,
 		colors.reset,
 		colors.green,
@@ -86,6 +88,8 @@ M.help_message = function()
 		colors.yellow,
 		colors.reset,
 		colors.green,
+		colors.reset,
+		colors.light_blue,
 		colors.reset
 	)
 

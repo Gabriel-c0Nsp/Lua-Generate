@@ -1,6 +1,6 @@
 # Lua Generate
 
-**Lua Generate** is a command-line tool (CLI) designed to generate boilerplate code for Next.js projects. Inspired by the practical style of Angular's `ng` tool, it simplifies the creation of common files and directories in React applications.
+**Lua Generate** is a command-line tool (CLI) designed to generate boilerplate code for [Next.js](https://nextjs.org/docs) projects. Inspired by the practical style of Angular's `ng` tool, it simplifies the creation of common files and directories in [React](https://react.dev/) applications.
 
 With support for file extension customization (e.g., `.js`, `.jsx`, `.ts`, `.tsx`), interactive commands, and detailed error messages, **Lua Generate** enhances the developer experience, allowing you to focus on what truly matters: building amazing applications.
 
@@ -151,7 +151,7 @@ lg generate component foo
 
 The command also accepts a path indicating where the component should be created. If the path does not exist, Lua Generate will create the necessary directories corresponding to the path provided in the command argument.
 
-Try the example below and check the result using the `tree` command (you may need to install `tree` using your system's package manager).
+Try the example below and check the result using the [tree](https://en.wikipedia.org/wiki/Tree_(command)) command (you may need to install `tree` using your system's package manager).
 ```bash
 lg generate component foo ./src/pages/examples/
 ```
@@ -172,7 +172,7 @@ Keep in mind that the `lg generate component` command also detects when a compon
 ||lg g c|
 
 - ### lg generate page
-This is the most specific command you will find in **Lua Generate**. All other commands are generally useful for React applications, but this command is particularly useful for applications using `Next.js`. The page system is essential in `Next.js` applications, so if you are not using this technology, you might not find much use for the `lg generate page` command.
+This is the most specific command you will find in **Lua Generate**. All other commands are generally useful for [React](https://react.dev/) applications, but this command is particularly useful for applications using [Next.js](https://nextjs.org/docs). The page system is essential in `Next.js` applications, so if you are not using this technology, you might not find much use for the `lg generate page` command.
 
 If you are familiar with `Next.js` applications, you likely have an idea of what this command does. Essentially, it creates a `page` file inside the directory specified by the user in the command's argument.
 

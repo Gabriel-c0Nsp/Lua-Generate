@@ -219,3 +219,18 @@ The way `lg generate svg` works is by searching for the svg tag within the speci
 |**lg generate svg**|lg generate s|
 ||lg g svg|
 ||lg g s|
+
+- ### lg help
+This command provides a quick reference on how to use all the others. It is very useful if you forget how to use a specific feature, allowing for a quick lookup with the `lg help` command.
+
+Try the `lg help` command yourself and see the output.
+
+```bash
+lg help
+```
+Note that much of the content from the `lg help` command has already been discussed in this `README.md` file, but with a much more concise description. You will also find a reference to this documentation within the `lg help` command itself.
+
+|Explicit Syntax|Abbreviation|
+|---|---|
+|**lg help**|lg h|
+|**lg --help**||

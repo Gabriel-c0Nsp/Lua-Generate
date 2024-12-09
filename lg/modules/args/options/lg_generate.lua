@@ -4,6 +4,7 @@ local colors = require("modules.utils.colors")
 local validate_input = require("modules.utils.validate_input")
 local templates = require("modules.templates.templates")
 local error_messages = require("modules.utils.output_logs")
+local extract_path_name = require("modules.utils.extract_path_name")
 
 local M = {}
 
@@ -57,6 +58,7 @@ local function get_svg_template(svg_name, svg_content)
 	return svg_template
 end
 
+-- FIXME: This function is throwing an error when the user provide a path with a file name together
 local function generate_css_file(component_name, path)
 	local config_values = config.get_config_values()
 
@@ -66,7 +68,7 @@ local function generate_css_file(component_name, path)
 	end
 
 	if config_values.style == "CSS" then
-		io.open(path .. "/" .. component_name .. ".css", "w"):close()
+		io.open(path .. component_name .. ".css", "w"):close()
 	end
 end
 
@@ -91,18 +93,13 @@ M.generate_component = function(component_name, path)
 	end
 
 	if not path then
-		if component_name:find("/") then
-			if component_name:sub(-1) == "/" then
-				print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
-				os.exit(1)
-			end
-
-			-- get everything behind the last slash (including the slash)
-			path = component_name:match("(.+)/")
-			-- get the last directory in the path
-			component_name = component_name:match(".+/(.+)")
-		end
+    path, component_name = extract_path_name(component_name, path)
 	end
+
+  if not path or not component_name then
+    print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
+    os.exit(1)
+  end
 
 	-- Checks if "component_name" has a custom extension
 	local has_custom_extension = component_name:match("%.[%w]+$")
@@ -126,7 +123,7 @@ M.generate_component = function(component_name, path)
 
 	if not file_exist(full_name) then
 		if path then
-			component_file = io.open(path .. "/" .. full_name, "w")
+			component_file = io.open(path .. full_name, "w")
 			generate_css_file(component_name, path)
 		else
 			component_file = io.open(full_name, "w")
@@ -162,7 +159,7 @@ M.generate_component = function(component_name, path)
 
 		if answer == "y" then
 			if path then
-				component_file = io.open(path .. "/" .. full_name, "w")
+				component_file = io.open(path .. full_name, "w")
 				generate_css_file(component_name, path)
 			else
 				component_file = io.open(full_name, "w")
@@ -295,19 +292,11 @@ M.generate_svg = function(svg_name, file_path)
 		return
 	end
 
-	local generated_svg_path = "./"
+	local generated_svg_path
 
-	if svg_name:find("/") then
-		if svg_name:sub(-1) == "/" then
-			print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
-			os.exit(1)
-		end
+	generated_svg_path, svg_name = extract_path_name(svg_name, generated_svg_path)
 
-		generated_svg_path = svg_name:match("(.+)/")
-		svg_name = svg_name:match(".+/(.+)")
-	end
-
-	if svg_name == nil then
+	if not generated_svg_path or not svg_name then
 		print(colors.red .. "ERROR: You need to provide a valid svg name!" .. colors.reset)
 		os.exit(1)
 	end
@@ -344,7 +333,7 @@ M.generate_svg = function(svg_name, file_path)
 				print(colors.yellow .. "Creating a default svg file" .. colors.reset)
 
 				os.execute("mkdir -p " .. generated_svg_path)
-				local svg_file = io.open(generated_svg_path .. "/" .. full_name, "w")
+				local svg_file = io.open(generated_svg_path .. full_name, "w")
 
 				if not svg_file then
 					error_messages.errors()["unable_to_create"]("file containing the svg")
@@ -365,7 +354,7 @@ M.generate_svg = function(svg_name, file_path)
 			svg = get_svg_template(svg_name, svg_content)
 
 			os.execute("mkdir -p " .. generated_svg_path)
-			local svg_file = io.open(generated_svg_path .. "/" .. full_name, "w")
+			local svg_file = io.open(generated_svg_path .. full_name, "w")
 
 			if not svg_file then
 				error_messages.errors()["unable_to_create"]("file containing the svg")
@@ -378,7 +367,7 @@ M.generate_svg = function(svg_name, file_path)
 			local svg = get_svg_template(svg_name, nil)
 
 			os.execute("mkdir -p " .. generated_svg_path)
-			local svg_file = io.open(generated_svg_path .. "/" .. full_name, "w")
+			local svg_file = io.open(generated_svg_path .. full_name, "w")
 
 			if not svg_file then
 				error_messages.errors()["unable_to_create"]("file containing the svg")
@@ -430,7 +419,7 @@ M.generate_svg = function(svg_name, file_path)
 				if answer == "y" then
 					print(colors.yellow .. "Creating a default svg file" .. colors.reset)
 					os.execute("mkdir -p " .. generated_svg_path)
-					local svg_file = io.open(generated_svg_path .. "/" .. full_name, "w")
+					local svg_file = io.open(generated_svg_path .. full_name, "w")
 
 					if not svg_file then
 						error_messages.errors()["unable_to_create"]("file containing the svg")
@@ -449,7 +438,7 @@ M.generate_svg = function(svg_name, file_path)
 				local svg = get_svg_template(svg_name, svg_content)
 
 				os.execute("mkdir -p " .. generated_svg_path)
-				local svg_file = io.open(generated_svg_path .. "/" .. full_name, "w")
+				local svg_file = io.open(generated_svg_path .. full_name, "w")
 
 				if not svg_file then
 					error_messages.errors()["unable_to_create"]("file containing the svg")
@@ -462,7 +451,7 @@ M.generate_svg = function(svg_name, file_path)
 				local svg = get_svg_template(svg_name, nil)
 
 				os.execute("mkdir -p " .. generated_svg_path)
-				local svg_file = io.open(generated_svg_path .. "/" .. full_name, "w")
+				local svg_file = io.open(generated_svg_path .. full_name, "w")
 
 				if not svg_file then
 					error_messages.errors()["unable_to_create"]("file containing the svg")

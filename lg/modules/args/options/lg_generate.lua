@@ -58,7 +58,6 @@ local function get_svg_template(svg_name, svg_content)
 	return svg_template
 end
 
--- FIXME: This function is throwing an error when the user provide a path with a file name together
 local function generate_css_file(component_name, path)
 	local config_values = config.get_config_values()
 
@@ -68,7 +67,7 @@ local function generate_css_file(component_name, path)
 	end
 
 	if config_values.style == "CSS" then
-		io.open(path .. component_name .. ".css", "w"):close()
+		os.execute("touch " .. path .. component_name .. ".css")
 	end
 end
 
@@ -93,13 +92,13 @@ M.generate_component = function(component_name, path)
 	end
 
 	if not path then
-    path, component_name = extract_path_name(component_name, path)
+		path, component_name = extract_path_name(component_name, path)
 	end
 
-  if not path or not component_name then
-    print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
-    os.exit(1)
-  end
+	if not path or not component_name then
+		print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
+		os.exit(1)
+	end
 
 	-- Checks if "component_name" has a custom extension
 	local has_custom_extension = component_name:match("%.[%w]+$")
@@ -109,26 +108,18 @@ M.generate_component = function(component_name, path)
 	component_name = component_name:match("(.+)%..+") or component_name
 
 	-- Checks if "path" ends with a slash and, if not, adds one
-	if path then
-		if path:sub(-1) ~= "/" then
-			path = path .. "/"
-
-			-- Creates the directory, if necessary
-			os.execute("mkdir -p " .. path)
-		end
+	if path:sub(-1) ~= "/" then
+		path = path .. "/"
 	end
+
+	os.execute("mkdir -p " .. path)
 
 	local component = get_component_template(component_name)
 	local component_file
 
-	if not file_exist(full_name) then
-		if path then
-			component_file = io.open(path .. full_name, "w")
-			generate_css_file(component_name, path)
-		else
-			component_file = io.open(full_name, "w")
-			generate_css_file(component_name, "./")
-		end
+	if not file_exist(path .. full_name) then
+		component_file = io.open(path .. full_name, "w")
+		generate_css_file(component_name, path)
 
 		if not component_file then
 			error_messages.errors()["unable_to_create"]("component file")
@@ -158,13 +149,8 @@ M.generate_component = function(component_name, path)
 		until validate_input(answer, valid_options)
 
 		if answer == "y" then
-			if path then
-				component_file = io.open(path .. full_name, "w")
-				generate_css_file(component_name, path)
-			else
-				component_file = io.open(full_name, "w")
-				generate_css_file(component_name, "./")
-			end
+			component_file = io.open(path .. full_name, "w")
+			generate_css_file(component_name, path)
 
 			if not component_file then
 				error_messages.errors()["unable_to_create"]("component file")

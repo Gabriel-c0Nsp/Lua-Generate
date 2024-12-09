@@ -71,13 +71,6 @@ local function generate_css_file(component_name, path)
 	end
 end
 
---[[
-  Example:
-    lg g c <component_name>
-    lg generate c <component_name>
-    lg g c <component_name> <path>
-    lg generate c <component_name> <path>
-]]
 M.generate_component = function(component_name, path)
 	local config_values = config.get_config_values()
 
@@ -86,14 +79,7 @@ M.generate_component = function(component_name, path)
 		return
 	end
 
-	if component_name:find("/") and path then
-		print(colors.red .. "You provided two paths for the component! This is not allowed" .. colors.reset)
-		os.exit(1)
-	end
-
-	if not path then
-		path, component_name = extract_path_name(component_name, path)
-	end
+	path, component_name = extract_path_name(component_name, path, "for the component")
 
 	if not path or not component_name then
 		print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
@@ -106,11 +92,6 @@ M.generate_component = function(component_name, path)
 
 	-- subtract the extension from the component name
 	component_name = component_name:match("(.+)%..+") or component_name
-
-	-- Checks if "path" ends with a slash and, if not, adds one
-	if path:sub(-1) ~= "/" then
-		path = path .. "/"
-	end
 
 	os.execute("mkdir -p " .. path)
 
@@ -165,14 +146,6 @@ M.generate_component = function(component_name, path)
 	end
 end
 
--- TODO: update this comment
---[[
-  Example:
-    lg g p <directory_name>
-    lg generate p <directory_name>
-    lg g page <directory_name>
-    lg generate page <directory_name>
-]]
 M.generate_page = function(function_name, path)
 	local config_values = config.get_config_values()
 
@@ -181,31 +154,14 @@ M.generate_page = function(function_name, path)
 		return
 	end
 
-	if function_name:find("/") and path then
-		print(colors.red .. "You provided two paths! This is not allowed" .. colors.reset)
-		os.exit(1)
-	end
+	path, function_name = extract_path_name(function_name, path)
 
-	if not path then
-		if function_name:find("/") then
-			if function_name:sub(-1) == "/" then
-				print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
-				os.exit(1)
-			end
-
-			-- get everything behind the last slash (including the slash)
-			path = function_name:match("(.+)/")
-			-- get the last directory in the path
-			function_name = function_name:match(".+/(.+)")
-		end
-	end
-
-	if not path then
-		path = "./"
+	if not path or not function_name then
+		print(colors.red .. "ERROR: You need to provide a valid function_name!" .. colors.reset)
 	end
 
 	local page = get_component_template(function_name)
-	local page_path = path .. "/page." .. config_values.extension
+	local page_path = path .. "page." .. config_values.extension
 
 	if file_exist(page_path) then
 		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
@@ -228,7 +184,7 @@ M.generate_page = function(function_name, path)
 		until validate_input(answer, valid_options)
 
 		if answer == "y" then
-			local page_file = io.open(path .. "/page." .. config_values.extension, "w")
+			local page_file = io.open(path .. "page." .. config_values.extension, "w")
 			generate_css_file("page", path)
 
 			if not page_file then
@@ -243,9 +199,9 @@ M.generate_page = function(function_name, path)
 		end
 	else
 		os.execute("mkdir -p " .. path)
-		os.execute("touch " .. path .. "/page." .. config_values.extension)
+		os.execute("touch " .. path .. "page." .. config_values.extension)
 
-		local page_file = io.open(path .. "/page." .. config_values.extension, "w")
+		local page_file = io.open(path .. "page." .. config_values.extension, "w")
 		generate_css_file("page", path)
 
 		if not page_file then
@@ -259,17 +215,6 @@ M.generate_page = function(function_name, path)
 end
 
 -- TODO: Create functions to to simplify how svg files are created
---[[
-  Example:
-    lg g s <file_name>
-    lg generate s <file_name>
-    lg g svg <file_name>
-    lg generate svg <file_name>
-    lg g s <file_name> <file_path>
-    lg generate s <file_name> <file_path>
-    lg g svg <file_name> <file_path>
-    lg generate svg <file_name> <file_path>
-]]
 M.generate_svg = function(svg_name, file_path)
 	local config_values = config.get_config_values()
 
@@ -290,12 +235,47 @@ M.generate_svg = function(svg_name, file_path)
 	local has_custom_extension = svg_name:match("%.[%w]+$")
 	local full_name = has_custom_extension and svg_name or (svg_name .. "." .. config_values.extension)
 
-	file_path = file_path or nil
-
 	svg_name = svg_name:match("(.+)%..+") or svg_name
 
-	if not file_exist(full_name) then
-		if file_path ~= nil and not file_exist(file_path) then
+	if not file_exist(generated_svg_path .. full_name) then
+		if not file_path then
+			print(colors.yellow .. "You didn't provide a path to a svg file! Is this what you want?" .. colors.reset)
+			local valid_options = { "y", "n" }
+			local answer
+
+			repeat
+				print("Do you want to create a default SVG file? (Y/n)")
+				io.write("--> ")
+				answer = io.read()
+				answer = answer:lower()
+
+				if answer == "" then
+					answer = "y"
+				end
+
+				if not validate_input(answer, valid_options) then
+					print(colors.red .. "Invalid input. Please try again." .. colors.reset)
+				end
+			until validate_input(answer, valid_options)
+
+			if answer == "y" then
+				os.execute("mkdir -p " .. generated_svg_path)
+				local svg_file = io.open(generated_svg_path .. full_name, "w")
+
+				if not svg_file then
+					error_messages.errors()["unable_to_create"]("file containing the svg")
+					return nil
+				end
+
+				local svg = get_svg_template(svg_name, nil)
+
+				svg_file:write(svg)
+				svg_file:close()
+			else
+				print(colors.yellow .. "Operation canceled" .. colors.reset)
+				print("You can try: lg --help for more information")
+			end
+		elseif file_path ~= nil and not file_exist(file_path) then
 			print(colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset)
 			local valid_options = { "y", "n" }
 			local answer
@@ -316,8 +296,6 @@ M.generate_svg = function(svg_name, file_path)
 			until validate_input(answer, valid_options)
 
 			if answer == "y" then
-				print(colors.yellow .. "Creating a default svg file" .. colors.reset)
-
 				os.execute("mkdir -p " .. generated_svg_path)
 				local svg_file = io.open(generated_svg_path .. full_name, "w")
 
@@ -403,7 +381,6 @@ M.generate_svg = function(svg_name, file_path)
 				until validate_input(answer, valid_options)
 
 				if answer == "y" then
-					print(colors.yellow .. "Creating a default svg file" .. colors.reset)
 					os.execute("mkdir -p " .. generated_svg_path)
 					local svg_file = io.open(generated_svg_path .. full_name, "w")
 

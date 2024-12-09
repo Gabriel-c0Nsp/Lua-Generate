@@ -18,6 +18,21 @@ M.critical_errors = function()
 			print("You can try: lg --help for more information")
 			os.exit(1)
 		end,
+		["two_paths_provided"] = function(adicional_information)
+			if adicional_information then
+				print(
+					colors.red
+						.. "You provided two paths "
+						.. adicional_information
+						.. "! This is not allowed."
+						.. colors.reset
+				)
+			else
+				print(colors.red .. "You provided two paths! This is not allowed." .. colors.reset)
+			end
+			print("You can try: lg --help for more information")
+			os.exit(1)
+		end,
 	}
 	return messages
 end

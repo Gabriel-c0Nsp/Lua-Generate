@@ -5,6 +5,7 @@ local get_user_choice = require("modules.utils.get_user_choice")
 local templates = require("modules.templates.templates")
 local error_messages = require("modules.utils.output_logs")
 local extract_path_name = require("modules.utils.extract_path_name")
+local extract_name_extension = require("modules.utils.extract_name_extension")
 
 local M = {}
 
@@ -82,16 +83,12 @@ M.generate_component = function(component_name, path)
 	path, component_name = extract_path_name(component_name, path, "for the component")
 
 	if not path or not component_name then
-		print(colors.red .. "ERROR: You need to provide a valid component name!" .. colors.reset)
-		os.exit(1)
+		error_messages.critical_errors()["invalid_function_name"]("component name")
+		os.exit(1) -- this is unreachable code, but it makes the lsp stop crying
 	end
 
-	-- Checks if "component_name" has a custom extension
-	local has_custom_extension = component_name:match("%.[%w]+$")
-	local full_name = has_custom_extension and component_name or (component_name .. "." .. config_values.extension)
-
-	-- subtract the extension from the component name
-	component_name = component_name:match("(.+)%..+") or component_name
+	local full_name
+	component_name, full_name = extract_name_extension(component_name)
 
 	os.execute("mkdir -p " .. path)
 
@@ -143,7 +140,8 @@ M.generate_page = function(function_name, path)
 	path, function_name = extract_path_name(function_name, path)
 
 	if not path or not function_name then
-		print(colors.red .. "ERROR: You need to provide a valid function_name!" .. colors.reset)
+		error_messages.critical_errors()["invalid_function_name"]("function_name")
+		os.exit(1)
 	end
 
 	local page = get_component_template(function_name)
@@ -199,14 +197,12 @@ M.generate_svg = function(svg_name, file_path)
 	generated_svg_path, svg_name = extract_path_name(svg_name, generated_svg_path)
 
 	if not generated_svg_path or not svg_name then
-		print(colors.red .. "ERROR: You need to provide a valid svg name!" .. colors.reset)
+		error_messages.critical_errors()["invalid_function_name"]("svg name")
 		os.exit(1)
 	end
 
-	local has_custom_extension = svg_name:match("%.[%w]+$")
-	local full_name = has_custom_extension and svg_name or (svg_name .. "." .. config_values.extension)
-
-	svg_name = svg_name:match("(.+)%..+") or svg_name
+	local full_name
+	svg_name, full_name = extract_name_extension(svg_name)
 
 	if not file_exist(generated_svg_path .. full_name) then
 		if not file_path then

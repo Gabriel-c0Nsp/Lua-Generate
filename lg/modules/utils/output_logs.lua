@@ -33,6 +33,11 @@ M.critical_errors = function()
 			print("You can try: lg --help for more information")
 			os.exit(1)
 		end,
+    ["invalid_function_name"] = function (function_name)
+      print(colors.red .. "ERROR: You need to provide a valid " .. function_name .. "!" .. colors.reset)
+			print("You can try: lg --help for more information")
+      os.exit(1)
+    end,
 	}
 	return messages
 end

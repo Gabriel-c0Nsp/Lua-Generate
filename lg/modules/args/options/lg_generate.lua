@@ -1,7 +1,7 @@
 local config = require("modules.config.config")
 local file_exist = require("modules.utils.check_file_exist")
 local colors = require("modules.utils.colors")
-local validate_input = require("modules.utils.validate_input")
+local get_user_choice = require("modules.utils.get_user_choice")
 local templates = require("modules.templates.templates")
 local error_messages = require("modules.utils.output_logs")
 local extract_path_name = require("modules.utils.extract_path_name")
@@ -110,26 +110,12 @@ M.generate_component = function(component_name, path)
 		component_file:write(component)
 		component_file:close()
 	else
-		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
-		local valid_options = { "y", "n" }
-		local answer
+		local user_choice = get_user_choice(
+			colors.yellow .. "ALERT! File already exists" .. colors.reset,
+			"Do you want to overwrite it? (y/N)"
+		)
 
-		repeat
-			print("Do you want to overwrite it? (y/N)")
-			io.write("--> ")
-			answer = io.read()
-			answer = answer:lower()
-
-			if answer == "" then
-				answer = "n"
-			end
-
-			if not validate_input(answer, valid_options) then
-				print(colors.red .. "Invalid input. Please try again." .. colors.reset)
-			end
-		until validate_input(answer, valid_options)
-
-		if answer == "y" then
+		if user_choice == "y" then
 			component_file = io.open(path .. full_name, "w")
 			generate_css_file(component_name, path)
 
@@ -164,26 +150,12 @@ M.generate_page = function(function_name, path)
 	local page_path = path .. "page." .. config_values.extension
 
 	if file_exist(page_path) then
-		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
-		local valid_options = { "y", "n" }
-		local answer
+		local user_choice = get_user_choice(
+			colors.yellow .. "ALERT! File already exists" .. colors.reset,
+			"Do you want to overwrite it? (y/N)"
+		)
 
-		repeat
-			print("Do you want to overwrite it? (y/N)")
-			io.write("--> ")
-			answer = io.read()
-			answer = answer:lower()
-
-			if answer == "" then
-				answer = "n"
-			end
-
-			if not validate_input(answer, valid_options) then
-				print(colors.red .. "Invalid input. Please try again." .. colors.reset)
-			end
-		until validate_input(answer, valid_options)
-
-		if answer == "y" then
+		if user_choice == "y" then
 			local page_file = io.open(path .. "page." .. config_values.extension, "w")
 			generate_css_file("page", path)
 
@@ -214,7 +186,6 @@ M.generate_page = function(function_name, path)
 	end
 end
 
--- TODO: Create functions to to simplify how svg files are created
 M.generate_svg = function(svg_name, file_path)
 	local config_values = config.get_config_values()
 
@@ -239,26 +210,12 @@ M.generate_svg = function(svg_name, file_path)
 
 	if not file_exist(generated_svg_path .. full_name) then
 		if not file_path then
-			print(colors.yellow .. "You didn't provide a path to a svg file! Is this what you want?" .. colors.reset)
-			local valid_options = { "y", "n" }
-			local answer
+			local user_choice = get_user_choice(
+				colors.yellow .. "You didn't provide a path to a svg file! Is this what you want?" .. colors.reset,
+				"Do you want to create a default SVG file? (Y/n)"
+			)
 
-			repeat
-				print("Do you want to create a default SVG file? (Y/n)")
-				io.write("--> ")
-				answer = io.read()
-				answer = answer:lower()
-
-				if answer == "" then
-					answer = "y"
-				end
-
-				if not validate_input(answer, valid_options) then
-					print(colors.red .. "Invalid input. Please try again." .. colors.reset)
-				end
-			until validate_input(answer, valid_options)
-
-			if answer == "y" then
+			if user_choice == "y" then
 				os.execute("mkdir -p " .. generated_svg_path)
 				local svg_file = io.open(generated_svg_path .. full_name, "w")
 
@@ -276,26 +233,12 @@ M.generate_svg = function(svg_name, file_path)
 				print("You can try: lg --help for more information")
 			end
 		elseif file_path ~= nil and not file_exist(file_path) then
-			print(colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset)
-			local valid_options = { "y", "n" }
-			local answer
+			local user_choice = get_user_choice(
+				colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset,
+				"Do you want to create a default SVG file? (Y/n)"
+			)
 
-			repeat
-				print("Do you want to create a default SVG file? (Y/n)")
-				io.write("--> ")
-				answer = io.read()
-				answer = answer:lower()
-
-				if answer == "" then
-					answer = "y"
-				end
-
-				if not validate_input(answer, valid_options) then
-					print(colors.red .. "Invalid input. Please try again." .. colors.reset)
-				end
-			until validate_input(answer, valid_options)
-
-			if answer == "y" then
+			if user_choice == "y" then
 				os.execute("mkdir -p " .. generated_svg_path)
 				local svg_file = io.open(generated_svg_path .. full_name, "w")
 
@@ -342,45 +285,19 @@ M.generate_svg = function(svg_name, file_path)
 			svg_file:close()
 		end
 	else
-		print(colors.yellow .. "ALERT! File already exists" .. colors.reset)
-		local valid_options = { "y", "n" }
-		local answer
+		local user_choice = get_user_choice(
+			colors.yellow .. "ALERT! File already exists" .. colors.reset,
+			"Do you want to overwrite it? (y/N)"
+		)
 
-		repeat
-			print("Do you want to overwrite it? (y/N)")
-			io.write("--> ")
-			answer = io.read()
-			answer = answer:lower()
-
-			if answer == "" then
-				answer = "n"
-			end
-
-			if not validate_input(answer, valid_options) then
-				print(colors.red .. "Invalid input. Please try again." .. colors.reset)
-			end
-		until validate_input(answer, valid_options)
-
-		if answer == "y" then
+		if user_choice == "y" then
 			if file_path ~= nil and not file_exist(file_path) then
-				print(colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset)
+				user_choice = get_user_choice(
+					colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset,
+					"Do you want to create a default SVG file? (Y/n)"
+				)
 
-				repeat
-					print("Do you want to create a default SVG file? (Y/n)")
-					io.write("--> ")
-					answer = io.read()
-					answer = answer:lower()
-
-					if answer == "" then
-						answer = "y"
-					end
-
-					if not validate_input(answer, valid_options) then
-						print(colors.red .. "Invalid input. Please try again." .. colors.reset)
-					end
-				until validate_input(answer, valid_options)
-
-				if answer == "y" then
+				if user_choice == "y" then
 					os.execute("mkdir -p " .. generated_svg_path)
 					local svg_file = io.open(generated_svg_path .. full_name, "w")
 

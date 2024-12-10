@@ -82,6 +82,10 @@ This command will display all available options, commands, and their alternative
 ## Commands and features
 In this section, you will find a basic usage guide for each Lua Generate feature, including examples and alternative syntax for the same command.
 
+* Note that we're using "< >" notation for **required** arguments and "[ ]" for **optional** arguments.
+
+---
+
 - ### lg init
 This command initializes the configuration file in the current directory. It is recommended to run it in the project's root directory.
 
@@ -143,6 +147,11 @@ As mentioned before, `lg init` creates the configuration file `lg_config.txt`, a
 - ### lg generate component
 This will likely be your favorite command in this script. It creates a component with the extension selected in the configuration file, and depending on your "style" configuration, it can also generate additional files (such as a file with the provided component name but with a `.css` extension, for example).
 
+General usage:
+```bash
+lg generate <component_name> [path]
+```
+
 You can try it yourself with the following command:
 
 ```bash
@@ -174,6 +183,11 @@ Keep in mind that the `lg generate component` command also detects when a compon
 - ### lg generate page
 This is the most specific command you will find in **Lua Generate**. All other commands are generally useful for [React](https://react.dev/) applications, but this command is particularly useful for applications using [Next.js](https://nextjs.org/docs). The page system is essential in `Next.js` applications, so if you are not using this technology, you might not find much use for the `lg generate page` command.
 
+General usage:
+```bash
+lg generate <function_name> [path]
+```
+
 If you are familiar with `Next.js` applications, you likely have an idea of what this command does. Essentially, it creates a `page` file inside the directory specified by the user in the command's argument.
 
 Again, you can try the command below and check the result using the `tree` command.
@@ -201,6 +215,11 @@ This command will actually produce the same output as the previous command.
 
 - ### lg generate svg
 This command simplifies the process of exporting .svg files to a function. This practice is very common in React applications.
+
+General usage:
+```bash
+lg generate <svg_name> [target_file_path]
+```
 
 See an example of the command below:
 

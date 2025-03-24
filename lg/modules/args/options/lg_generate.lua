@@ -109,7 +109,8 @@ M.generate_component = function(component_name, path)
 	else
 		local user_choice = get_user_choice(
 			colors.yellow .. "ALERT! File already exists" .. colors.reset,
-			"Do you want to overwrite it? (y/N)"
+			"Do you want to overwrite it? (y/N)",
+      "n"
 		)
 
 		if user_choice == "y" then
@@ -150,7 +151,8 @@ M.generate_page = function(function_name, path)
 	if file_exist(page_path) then
 		local user_choice = get_user_choice(
 			colors.yellow .. "ALERT! File already exists" .. colors.reset,
-			"Do you want to overwrite it? (y/N)"
+			"Do you want to overwrite it? (y/N)",
+      "n"
 		)
 
 		if user_choice == "y" then
@@ -208,7 +210,8 @@ M.generate_svg = function(svg_name, file_path)
 		if not file_path then
 			local user_choice = get_user_choice(
 				colors.yellow .. "You didn't provide a path to a svg file! Is this what you want?" .. colors.reset,
-				"Do you want to create a default SVG file? (Y/n)"
+				"Do you want to create a default SVG file? (Y/n)",
+        "y"
 			)
 
 			if user_choice == "y" then
@@ -231,7 +234,8 @@ M.generate_svg = function(svg_name, file_path)
 		elseif file_path ~= nil and not file_exist(file_path) then
 			local user_choice = get_user_choice(
 				colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset,
-				"Do you want to create a default SVG file? (Y/n)"
+				"Do you want to create a default SVG file? (Y/n)",
+        "y"
 			)
 
 			if user_choice == "y" then
@@ -283,14 +287,16 @@ M.generate_svg = function(svg_name, file_path)
 	else
 		local user_choice = get_user_choice(
 			colors.yellow .. "ALERT! File already exists" .. colors.reset,
-			"Do you want to overwrite it? (y/N)"
+			"Do you want to overwrite it? (y/N)",
+      "n"
 		)
 
 		if user_choice == "y" then
 			if file_path ~= nil and not file_exist(file_path) then
 				user_choice = get_user_choice(
 					colors.red .. "ERROR: File " .. file_path .. " does not exist!" .. colors.reset,
-					"Do you want to create a default SVG file? (Y/n)"
+					"Do you want to create a default SVG file? (Y/n)",
+          "y"
 				)
 
 				if user_choice == "y" then

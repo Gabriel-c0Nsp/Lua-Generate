@@ -26,6 +26,7 @@ end
 M.init = function()
 	local lg_init = os.getenv("PWD")
 	M.generate_config(lg_init)
+  print(colors.green .. "Configuration file for lg was successfully created!" .. colors.reset)
 end
 
 M.root_dir = function()

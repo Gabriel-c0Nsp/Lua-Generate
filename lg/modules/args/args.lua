@@ -3,6 +3,7 @@ local error_messages = require("modules.utils.output_logs")
 
 local config = require("modules.config.config")
 local lg_help = require("modules.args.options.lg_help")
+local lg_version = require("modules.args.options.lg_version")
 local lg_config = require("modules.args.options.lg_config")
 local lg_generate = require("modules.args.options.lg_generate")
 local get_user_choice = require("modules.utils.get_user_choice")
@@ -168,6 +169,14 @@ local function in_case_help(args)
   end
 end
 
+local function in_case_version(args)
+  if #args > 1 then
+    error_messages.critical_errors()["too_many_args"]()
+  else
+    lg_version.get_version()
+  end
+end
+
 M.check_args = function(args)
   check_any_args(args)
   if args[1] == "i" or args[1] == "init" then
@@ -176,8 +185,10 @@ M.check_args = function(args)
     in_case_config(args)
   elseif args[1] == "g" or args[1] == "generate" then
     in_case_generate(args)
-  elseif args[1] == "h" or args[1] == "help" or args[1] == "--help" then
+  elseif args[1] == "h" or args[1] == "-h" or args[1] == "help" or args[1] == "--help" then
     in_case_help(args)
+  elseif args[1] == "v" or args[1] == "-v" or args[1] == "version" or args[1] == "--version" then
+    in_case_version(args)
   else
     error_messages.critical_errors()["invalid_arguments"]()
   end

@@ -53,8 +53,15 @@ M.help_message = function()
         - lg g svg <svg_name> [target_file_path]
         - lg generate svg <svg_name> [target_file_path]
 
+    %slg v%s - Show the program version
+      Alternative syntax:
+        - lg -v
+        - lg version
+        - lg --version
+
     %slg h%s - Show this help message
       Alternative syntax:
+        - lg -h
         - lg help
         - lg --help
 
@@ -86,6 +93,8 @@ M.help_message = function()
 		colors.reset,
 		colors.green,
 		colors.yellow,
+		colors.reset,
+		colors.green,
 		colors.reset,
 		colors.green,
 		colors.reset,

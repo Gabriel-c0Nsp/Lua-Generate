@@ -26,7 +26,7 @@ To run **Lua Generate**, you’ll need to have the following dependencies instal
      ```
    - **On Arch**:
      ```bash
-     sudo pacman -S lua
+     sudo pacman -S lua53
      ```
    - **On macOS (using Homebrew)**:
      ```bash

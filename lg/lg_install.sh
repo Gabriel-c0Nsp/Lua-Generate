@@ -22,6 +22,7 @@ touch lg
 chmod +x ./lg
 
 echo "#!/bin/sh" >> lg
-echo "lua5.3 $LG_PATH/init.lua \"\$@\"" >> lg
+# echo "lua5.3 $LG_PATH/init.lua \"\$@\"" >> lg
+echo "lua $LG_PATH/init.lua \"\$@\"" >> lg
 
 echo -e "${green}Lua Generate has been installed successfully!${reset}"

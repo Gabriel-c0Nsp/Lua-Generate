@@ -1,8 +1,6 @@
 # Lua Generate
 
-**Lua Generate** is a command-line tool (CLI) designed to generate boilerplate code for [Next.js](https://nextjs.org/docs) projects. Inspired by the practical style of Angular's `ng` tool, it simplifies the creation of common files and directories in [React](https://react.dev/) applications.
-
-With support for file extension customization (e.g., `.js`, `.jsx`, `.ts`, `.tsx`), interactive commands, and detailed error messages, **Lua Generate** enhances the developer experience, allowing you to focus on what truly matters: building amazing applications.
+**Lua Generate** is a command-line tool (CLI) designed to generate boilerplate code for [Next.js](https://nextjs.org/docs) projects. Inspired by the practical style of Angular's `ng` tool, it simplifies the creation of common files and directories in [React](https://react.dev/) applications, with support for file extension customization (e.g., `.js`, `.jsx`, `.ts`, `.tsx`), interactive commands, and detailed error messages.
 
 ---
 
@@ -11,7 +9,7 @@ With support for file extension customization (e.g., `.js`, `.jsx`, `.ts`, `.tsx
 To run **Lua Generate**, you’ll need to have the following dependencies installed on your system:
 
 ### 1. **Lua 5.3**
-   **Lua Generate** is written in Lua, so you’ll need Lua 5.3 (or higher) installed on your machine to execute the commands.
+   **Lua Generate** is written in Lua, and for compatibility reasons, you’ll need **Lua 5.3** installed on your machine to execute the commands.
 
    You can install Lua 5.3 using your package manager:
 
@@ -106,8 +104,7 @@ lg init -silent
 |Explicit Syntax|Abbreviation|
 |---|---|
 |**lg init**|lg i|
-|**lg init -silent**|lg init -silent|
-||lg init -s|
+|**lg init -silent**|lg init -s|
 ||lg i -silent|
 ||lg i -s|
 
@@ -252,4 +249,24 @@ Note that much of the content from the `lg help` command has already been discus
 |Explicit Syntax|Abbreviation|
 |---|---|
 |**lg help**|lg h|
-|**lg --help**||
+|**lg --help**|lg -h|
+
+- ### lg version
+This command gives you information about **Lua Generate** currently installed version.
+
+This is a good way to check if everything is working fine.
+
+```bash
+lg version
+```
+The output should be similar to this:
+
+```bash
+Lua Generate version x.x
+```
+where "x.x" is the version number format.
+
+|Explicit Syntax|Abbreviation|
+|---|---|
+|**lg version**|lg v|
+|**lg --version**|lg -v|

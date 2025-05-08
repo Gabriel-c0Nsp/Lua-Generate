@@ -61,7 +61,7 @@ chmod +x ./lg_install.sh
 ```
 Now, simply run the following command:
 ```bash
-./lg_install.sh
+source ./lg_install.sh
 ```
 
 ---

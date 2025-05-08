@@ -22,6 +22,7 @@ reset='\e[0m'
 
 LG_PATH=$(pwd)
 LG_MODULES=$LG_PATH/modules
+CHOICE="" # stores user's choice
 
 # check if the user has the right version of lua
 if ! lua5.3 -v >/dev/null 2>&1 ; then
@@ -34,17 +35,23 @@ fi
 if test -f lg; then
   echo -e "${yellow}You already have Lua Generate installed on your machine${reset}"
 
-  choice=""
-
   echo -n "Would you like to update it (or install it again)? [y/N]: "
+  read CHOICE
 
-  read choice
-
-  if [[ $choice != "y" && $choice != "yes" ]]; then
+  if [[ "${CHOICE,,}" != "y" && "${CHOICE,,}" != "yes" ]]; then
     return 0
+  fi
+else 
+  if grep "export PATH=\$PATH:.*/lg" "$HOME"/.bashrc >/dev/null 2>&1 ; then
+    # The user probably has a conflicting program inside their system
+    echo -e "${red}You already have a lg named script defined on your system!${reset}"
+    echo -e "If it's not Lua Generate program, consider renaming or removing it.\n"
+    echo -e "Please, resolve this conflict first before trying to install again."
+      return 1
   fi
 fi
 
+# "installation" process
 echo -e "${yellow}You may have to provide your password to be able to install Lua Generate${reset}"
 sudo cp -r $LG_MODULES /usr/lib/lua/5.3/
 
@@ -53,21 +60,12 @@ echo -e "\nInstalling...\n"
 touch lg
 chmod +x ./lg
 
-# "installation" process
 echo "#!/bin/sh" > lg
 echo "lua5.3 $LG_PATH/init.lua \"\$@\"" >> lg
 
 # make lg command executable everywhere inside the user's terminal
-if grep "export PATH=\$PATH:.*/lg" "$HOME"/.bashrc >/dev/null 2>&1 ; then
-  echo -e "${red}You already have a lg named script defined on your system!${reset}"
-  echo -e "If it's not Lua Generate program, consider renaming or removing it.\n"
-  echo -e "Please, resolve this conflict first before trying to install again."
-  
-  return 1
-else
-  echo -e "\n# Inserted by Lua Generate program:" >> ${HOME}/.bashrc
-  echo -e "export PATH=\$PATH:${LG_PATH}" >> ${HOME}/.bashrc
-fi
+echo -e "\n# Inserted by Lua Generate program:" >> ${HOME}/.bashrc
+echo -e "export PATH=\$PATH:${LG_PATH}" >> ${HOME}/.bashrc
 
 echo -e "${green}Lua Generate has been installed successfully!${reset}"
 echo "You can try: lg --help for more information"

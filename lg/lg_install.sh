@@ -45,7 +45,7 @@ else
   if grep "export PATH=\$PATH:.*/lg" "$HOME"/.bashrc >/dev/null 2>&1 ; then
     # The user probably has a conflicting program inside their system
     echo -e "${red}You already have a lg named script defined on your system!${reset}"
-    echo -e "If it's not Lua Generate program, consider renaming or removing it.\n"
+    echo -e "If it's not the Lua Generate program, consider renaming or removing it.\n"
     echo -e "Please, resolve this conflict first before trying to install again."
       return 1
   fi
